@@ -21,8 +21,7 @@ public class CollectableController : MonoBehaviour, ICollectable
         return collectableType;
     }
 
-    public Vector3 GetPosition()
+    public void GetCollected()
     {
-        return transform.position;
     }
 }
