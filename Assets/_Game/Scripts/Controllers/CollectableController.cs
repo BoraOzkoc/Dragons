@@ -21,7 +21,7 @@ public class CollectableController : MonoBehaviour, ICollectable
         return collectableType;
     }
 
-    public void GetCollected()
+    public void JoinGroup()
     {
     }
 }

@@ -11,7 +11,7 @@ public class CollectorController : MonoBehaviour
     {
         if (other.TryGetComponent(out ICollectable collectable))
         {
-            collectable.GetCollected();
+            collectable.JoinGroup();
             
         }
     }

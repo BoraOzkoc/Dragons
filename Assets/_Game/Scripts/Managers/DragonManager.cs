@@ -13,7 +13,7 @@ public class DragonManager : MonoBehaviour
     {
         for (int i = 0; i < _dragonList.Count; i++)
         {
-            _dragonList[i].GetCollected();
+            _dragonList[i].JoinGroup();
             _dragonList[i].Init(this);
         }
     }

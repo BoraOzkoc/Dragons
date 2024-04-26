@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using TMPro;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -10,7 +11,7 @@ public class DragonController : MonoBehaviour, ICollectable
 {
     [SerializeField] private int _number;
     [SerializeField] private bool _isCaged;
-    [SerializeField] private bool _isCollected;
+    [FormerlySerializedAs("_joinedGroup")] [FormerlySerializedAs("_isCollected")] [SerializeField] private bool _groupJoined;
     [SerializeField] private TextMeshPro _numberText;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField, ReadOnly] private DragonController _leftNode, _rightNode;
@@ -43,13 +44,13 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void CheckCollisions(Collider other)
     {
-        if (IsCaged() || !_isCollected) return;
+        if (IsCaged() || !_groupJoined) return;
         if (!other.TryGetComponent(out DragonController dragonController)) return;
 
         if (dragonController.IsCaged()) return;
-        if (_isCollected)
+        if (_groupJoined)
         {
-            if (dragonController._isCollected) return;
+            if (dragonController._groupJoined) return;
 
             if (dragonController.GetNumber() == GetNumber())
             {
@@ -58,7 +59,7 @@ public class DragonController : MonoBehaviour, ICollectable
             }
             else
             {
-                dragonController.GetCollected();
+                dragonController.JoinGroup();
 
                 _dragonManager.AddToList(dragonController);
                 CheckTouchPosition(dragonController);
@@ -68,7 +69,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void CheckGround()
     {
-        if (!_isCollected) return;
+        if (!_groupJoined) return;
         RaycastHit hit;
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 5, _groundLayer))
         {
@@ -84,8 +85,9 @@ public class DragonController : MonoBehaviour, ICollectable
     private void StartFalling()
     {
         GetDestroyed(1);
+        LeaveGroup();
         transform.SetParent(null);
-        _isCollected = false;
+        _groupJoined = false;
         Rigidbody rb = GetComponent<Rigidbody>();
         Collider collider = GetComponent<Collider>();
         collider.isTrigger = false;
@@ -132,7 +134,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void GetDestroyed(float seconds = 0)
     {
-        if (_isCollected)
+        if (_groupJoined)
         {
             EmptyNodes();
             _dragonManager.RemoveFromList(this);
@@ -195,8 +197,13 @@ public class DragonController : MonoBehaviour, ICollectable
         transform.localPosition = pos;
     }
 
-    public void GetCollected()
+    public void JoinGroup()
     {
-        _isCollected = true;
+        _groupJoined = true;
+    }
+
+    private void LeaveGroup()
+    {
+        _groupJoined = false;
     }
 }
