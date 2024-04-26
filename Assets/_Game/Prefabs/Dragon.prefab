@@ -320,8 +320,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a1ed0f5b4f21a34082f3ec04c4c50d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLocation: {fileID: 0}
   _number: 2
   _isCaged: 0
   _isCollected: 0
   _numberText: {fileID: 2016895046985830837}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
