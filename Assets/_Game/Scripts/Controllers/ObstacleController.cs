@@ -12,11 +12,21 @@ public class ObstacleController : MonoBehaviour
     [SerializeField] private int _obstacleNumber;
     [SerializeField] private bool isDestroyed;
 
+    private void Start()
+    {
+        _dragonController.GetCaged();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (isDestroyed) return;
         if (other.TryGetComponent(out DragonController dragonController))
         {
+            if (!dragonController.IsCaged())
+            {
+                dragonController.GetDestroyed();
+                Debug.Log("destroy");
+            }
         }
     }
 
@@ -28,14 +38,21 @@ public class ObstacleController : MonoBehaviour
         {
             _obstacleNumber = 0;
             isDestroyed = true;
+            FreeDragon();
         }
 
         UpdateText();
     }
 
+    private void DestroyCage()
+    {
+        _mesh.SetActive(false);
+    }
+
     private void FreeDragon()
     {
         _dragonController.GetFreed();
+        _dragonController = null;
     }
 
     private void UpdateText()
