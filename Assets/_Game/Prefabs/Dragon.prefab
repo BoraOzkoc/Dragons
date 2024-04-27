@@ -171,6 +171,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1580883174764454346}
   m_maskType: 0
+--- !u!1 &5119142694780539691
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6757621515529576485}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6757621515529576485
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5119142694780539691}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.51, z: 0.754}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4739907500054515964}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7545314748770446646
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,6 +238,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 418890173214401131}
+  - {fileID: 6757621515529576485}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4766924092016284315
@@ -323,11 +355,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _number: 2
   _isCaged: 0
-  _isCollected: 0
+  _groupJoined: 0
   _numberText: {fileID: 2016895046985830837}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  _attackController: {fileID: 3633947359436480864}
   _leftNode: {fileID: 0}
   _rightNode: {fileID: 0}
 --- !u!114 &3633947359436480864
@@ -342,3 +375,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a8eb5990b8b97a4fb55135500d9335c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damage: 1
+  _waitBetweenAttacks: 1
+  _projectileSpeed: 10
+  _projectileLifeTime: 1
+  _firePoint: {fileID: 6757621515529576485}
+  _dragonController: {fileID: 4440521303445981966}

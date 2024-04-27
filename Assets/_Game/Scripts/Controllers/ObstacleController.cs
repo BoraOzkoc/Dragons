@@ -34,10 +34,11 @@ public class ObstacleController : MonoBehaviour
     {
         if (isDestroyed) return;
         _obstacleNumber -= amount;
-        if (_obstacleNumber < 0)
+        if (_obstacleNumber <= 0)
         {
             _obstacleNumber = 0;
             isDestroyed = true;
+            DestroyCage();
             FreeDragon();
         }
 

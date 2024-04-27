@@ -11,9 +11,10 @@ public class DragonController : MonoBehaviour, ICollectable
 {
     [SerializeField] private int _number;
     [SerializeField] private bool _isCaged;
-    [FormerlySerializedAs("_joinedGroup")] [FormerlySerializedAs("_isCollected")] [SerializeField] private bool _groupJoined;
+    [SerializeField] private bool _groupJoined;
     [SerializeField] private TextMeshPro _numberText;
     [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private AttackController _attackController;
     [SerializeField, ReadOnly] private DragonController _leftNode, _rightNode;
 
     private DragonManager _dragonManager;
@@ -84,15 +85,16 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void StartFalling()
     {
-        GetDestroyed(1);
-        LeaveGroup();
-        transform.SetParent(null);
         _groupJoined = false;
         Rigidbody rb = GetComponent<Rigidbody>();
         Collider collider = GetComponent<Collider>();
-        collider.isTrigger = false;
+        Destroy(collider);
         rb.isKinematic = false;
         rb.useGravity = true;
+        GetDestroyed(1);
+        LeaveGroup();
+        _attackController.ToggleAttack(false);
+        transform.SetParent(null);
     }
 
     public bool IsCaged()
@@ -200,6 +202,7 @@ public class DragonController : MonoBehaviour, ICollectable
     public void JoinGroup()
     {
         _groupJoined = true;
+        _attackController.ToggleAttack(true);
     }
 
     private void LeaveGroup()
