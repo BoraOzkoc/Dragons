@@ -5,14 +5,15 @@ using UnityEngine;
 public class CollectableController : MonoBehaviour, ICollectable
 {
     public Type collectableType;
-
+    [SerializeField] private int amount = 1;
     public enum Type
     {
-        Cube
+        GoldenEgg
     }
 
     public void GetCollected(Vector3 pos)
     {
+        EggCounter.Instance.IncreaseCount(amount);
         Destroy(gameObject);
     }
 

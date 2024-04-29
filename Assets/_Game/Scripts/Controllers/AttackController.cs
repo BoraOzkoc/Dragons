@@ -9,7 +9,7 @@ public class AttackController : MonoBehaviour
 {
     [SerializeField] private int _damage;
     [SerializeField] private float _waitBetweenAttacks, _projectileSpeed;
-    [FormerlySerializedAs("_range")] [SerializeField] private float _projectileLifeTime;
+    [SerializeField] private float _projectileLifeTime;
     [SerializeField] private Transform _firePoint;
     [SerializeField] private DragonController _dragonController;
     private bool _canAttack;
@@ -27,10 +27,11 @@ public class AttackController : MonoBehaviour
         if (state) _attackCoroutine ??= StartCoroutine(AttackCoroutine());
     }
 
-    private void Update()
-    {
-    }
 
+    public void SetDamage(int amount)
+    {
+        _damage = amount;
+    }
 
     IEnumerator AttackCoroutine()
     {

@@ -23,6 +23,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void Start()
     {
+        SetAttackDamage();
     }
 
     public void Init(DragonManager dragonManager)
@@ -156,7 +157,7 @@ public class DragonController : MonoBehaviour, ICollectable
         if (_rightNode) _rightNode.PullRightNode(times);
     }
 
-    
+
     public void PullLeftNode(int times)
     {
         transform.DOLocalMoveX(0.5f, 0).SetRelative(true);
@@ -204,6 +205,11 @@ public class DragonController : MonoBehaviour, ICollectable
         return _leftNode;
     }
 
+    public bool InGroup()
+    {
+        return _groupJoined;
+    }
+
     private void EmptyNodes()
     {
         if (_leftNode) _leftNode.SetRightNode(_rightNode);
@@ -238,6 +244,12 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         _number = amount;
         UpdateText();
+        SetAttackDamage();
+    }
+
+    private void SetAttackDamage()
+    {
+        _attackController.SetDamage(_number);
     }
 
     private void UpdateText()

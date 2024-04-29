@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 6235696441841441729}
   - component: {fileID: 4440521303445981966}
   - component: {fileID: 3633947359436480864}
+  - component: {fileID: 790813347170331273}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -381,3 +382,15 @@ MonoBehaviour:
   _projectileLifeTime: 1
   _firePoint: {fileID: 6757621515529576485}
   _dragonController: {fileID: 4440521303445981966}
+--- !u!114 &790813347170331273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7545314748770446646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43654f341ca2d574d9771eedcb53a88d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
