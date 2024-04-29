@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using NaughtyAttributes;
 using TMPro;
 using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 
 public class DragonController : MonoBehaviour, ICollectable
@@ -104,12 +106,61 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void SetRightNode(DragonController dragonController)
     {
+        if (_rightNode)
+        {
+            _rightNode.PushRightNode();
+            dragonController.SetRightNode(_rightNode);
+            _rightNode.SetLeftNodeOneTime(dragonController);
+        }
+
         _rightNode = dragonController;
     }
 
     public void SetLeftNode(DragonController dragonController)
     {
+        if (_leftNode)
+        {
+            _leftNode.PushLeftNode();
+            dragonController.SetLeftNode(_leftNode);
+            _leftNode.SetRightNodeOneTime(dragonController);
+        }
+
         _leftNode = dragonController;
+    }
+
+    public void SetLeftNodeOneTime(DragonController dragonController)
+    {
+        _leftNode._rightNode = dragonController;
+    }
+
+    public void SetRightNodeOneTime(DragonController dragonController)
+    {
+        _rightNode._leftNode = dragonController;
+    }
+
+    public void PushRightNode()
+    {
+        transform.DOLocalMoveX(1, 0).SetRelative(true);
+        if (_rightNode) _rightNode.PushRightNode();
+    }
+
+    public void PushLeftNode()
+    {
+        transform.DOLocalMoveX(-1, 0).SetRelative(true);
+        if (_leftNode) _leftNode.PushLeftNode();
+    }
+
+    public void PullRightNode(int times)
+    {
+        transform.DOLocalMoveX(-0.5f, 0).SetRelative(true);
+        if (_rightNode) _rightNode.PullRightNode(times);
+    }
+
+    
+    public void PullLeftNode(int times)
+    {
+        transform.DOLocalMoveX(0.5f, 0).SetRelative(true);
+        if (_leftNode) _leftNode.PullLeftNode(times);
     }
 
     private void CheckTouchPosition(DragonController dragonController)
@@ -121,7 +172,6 @@ public class DragonController : MonoBehaviour, ICollectable
             dragonController.MoveToTarget(targetPos);
             SetRightNode(dragonController);
             dragonController.SetLeftNode(this);
-            //_dragonManager.MoveListToLeft();
         }
         else //Goes Left
         {
@@ -130,7 +180,6 @@ public class DragonController : MonoBehaviour, ICollectable
 
             SetLeftNode(dragonController);
             dragonController.SetRightNode(this);
-            //_dragonManager.MoveListToRight();
         }
     }
 
@@ -159,8 +208,20 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         if (_leftNode) _leftNode.SetRightNode(_rightNode);
         if (_rightNode) _rightNode.SetLeftNode(_leftNode);
-        SetRightNode(null);
-        SetLeftNode(null);
+        //_leftNode.PullLeftNode();
+        // _rightNode.PullRightNode();
+        EmptyRightNode();
+        EmptyLeftNode();
+    }
+
+    private void EmptyRightNode()
+    {
+        _rightNode = null;
+    }
+
+    private void EmptyLeftNode()
+    {
+        _leftNode = null;
     }
 
     public int GetNumber()

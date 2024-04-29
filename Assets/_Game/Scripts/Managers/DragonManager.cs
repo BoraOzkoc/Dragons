@@ -23,7 +23,6 @@ public class DragonManager : MonoBehaviour
         _dragonList.Add(dragonController);
         dragonController.Init(this);
         dragonController.transform.SetParent(transform);
-        RearrangePositions();
     }
 
     public void RemoveFromList(DragonController dragonController)
@@ -31,7 +30,6 @@ public class DragonManager : MonoBehaviour
         if (!_dragonList.Contains(dragonController)) return;
         _dragonList.Remove(dragonController);
         CheckListNumber();
-        RearrangePositions();
     }
 
     public void MoveListToLeft()
@@ -50,8 +48,38 @@ public class DragonManager : MonoBehaviour
         }
     }
 
-    private void RearrangePositions()
+    private DragonController FindClosest(List<DragonController> tempList)
     {
+        int times = tempList.Count;
+        float minDistance = 999;
+        DragonController minDistancedDragon = null;
+        for (int i = 0; i < times; i++)
+        {
+            Vector3 pos = _dragonList[i].transform.position;
+
+            float distance = Vector3.Distance(pos, transform.position);
+            if (distance <= minDistance)
+            {
+                minDistance = distance;
+                minDistancedDragon = _dragonList[i];
+            }
+        }
+
+        return minDistancedDragon;
+    }
+
+    private void ExtractFromList()
+    {
+    }
+
+    public void RepositionList(List<DragonController> list)
+    {
+        List<DragonController> tempList = new List<DragonController>(_dragonList);
+       DragonController closestDragon = FindClosest(tempList);
+       
+       //do something then remove
+       tempList.Remove(closestDragon);
+
     }
 
     private void CheckListNumber()

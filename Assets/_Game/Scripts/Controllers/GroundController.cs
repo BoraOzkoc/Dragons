@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 public class GroundController : MonoBehaviour
 {
     public static GroundController Instance;
-    [ReadOnly] public float Mesh_z_lengt;
+    [ReadOnly] public float Mesh_z_lengt, Mesh_x_length;
     [SerializeField] private int _length;
     [SerializeField] private GameObject _floorPrefab;
 
@@ -36,20 +36,21 @@ public class GroundController : MonoBehaviour
     private void Start()
     {
         _floorParent.SetParent(LevelController.Instance.transform);
-
     }
 
     [Button]
     private void CreateGround()
     {
         DeleteExistingGround();
-        GetMeshLength();
+
+        GetMeshLength_x();
+        GetMeshLength_z();
 
         _floorParent = new GameObject("FloorParent").transform;
         for (int i = 0; i < _length; i++)
         {
             Vector3 pos = transform.position + (i * Mesh_z_lengt * Vector3.forward);
-            pos.x = -2.5f;
+            pos.x = -Mesh_x_length;
             GameObject obj = Instantiate(_floorPrefab, pos, quaternion.identity, _floorParent.transform);
             _floorList.Add(obj);
             if (i == _length - 1)
@@ -58,7 +59,7 @@ public class GroundController : MonoBehaviour
 
 
                 Vector3 targetPos = pos;
-                targetPos.x += 2.5f;
+                targetPos.x += -Mesh_x_length;
                 targetPos.z += Mesh_z_lengt;
 
                 ending.position = targetPos;
@@ -90,7 +91,14 @@ public class GroundController : MonoBehaviour
         _floorList.Clear();
     }
 
-    private void GetMeshLength()
+    private void GetMeshLength_x()
+    {
+        float xLength = _floorPrefab.GetComponent<MeshFilter>().sharedMesh.bounds.size.x;
+
+        Mesh_x_length = xLength;
+    }
+
+    private void GetMeshLength_z()
     {
         float zLength = _floorPrefab.GetComponent<MeshFilter>().sharedMesh.bounds.size.z;
 

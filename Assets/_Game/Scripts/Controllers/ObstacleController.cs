@@ -11,6 +11,7 @@ public class ObstacleController : MonoBehaviour
     [SerializeField] private GameObject _mesh;
     [SerializeField] private int _obstacleNumber;
     [SerializeField] private bool isDestroyed;
+    [SerializeField] private ParticleSystem _destroyEffect;
 
     private void Start()
     {
@@ -24,8 +25,8 @@ public class ObstacleController : MonoBehaviour
         {
             if (!dragonController.IsCaged())
             {
+                if(_destroyEffect) _destroyEffect.Play();
                 dragonController.GetDestroyed();
-                Debug.Log("destroy");
             }
         }
     }
