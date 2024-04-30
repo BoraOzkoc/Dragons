@@ -15,11 +15,13 @@ public class PoolingManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
+        
+        SpawnObjects();
+
     }
 
     private void Start()
     {
-        SpawnObjects();
     }
 
     private void SpawnObjects()

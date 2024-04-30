@@ -151,17 +151,16 @@ public class DragonController : MonoBehaviour, ICollectable
         if (_leftNode) _leftNode.PushLeftNode();
     }
 
-    public void PullRightNode(int times)
+    public void PullRightNode()
     {
         transform.DOLocalMoveX(-0.5f, 0).SetRelative(true);
-        if (_rightNode) _rightNode.PullRightNode(times);
+        if (_rightNode) _rightNode.PullRightNode();
     }
 
-
-    public void PullLeftNode(int times)
+    public void PullLeftNode()
     {
         transform.DOLocalMoveX(0.5f, 0).SetRelative(true);
-        if (_leftNode) _leftNode.PullLeftNode(times);
+        if (_leftNode) _leftNode.PullLeftNode();
     }
 
     private void CheckTouchPosition(DragonController dragonController)
@@ -181,6 +180,22 @@ public class DragonController : MonoBehaviour, ICollectable
 
             SetLeftNode(dragonController);
             dragonController.SetRightNode(this);
+        }
+
+        //dragonController.CheckNeighbourNodes();
+    }
+
+    private void CheckNeighbourNodes()
+    {
+        if (_leftNode && _leftNode.GetNumber() == GetNumber())
+        {
+            _leftNode.GetMerged();
+            GetDestroyed();
+        }
+        else if (_rightNode && _rightNode.GetNumber() == GetNumber())
+        {
+            _rightNode.GetMerged();
+            GetDestroyed();
         }
     }
 
@@ -212,8 +227,18 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void EmptyNodes()
     {
-        if (_leftNode) _leftNode.SetRightNode(_rightNode);
-        if (_rightNode) _rightNode.SetLeftNode(_leftNode);
+        if (_leftNode)
+        {
+            _leftNode.SetRightNode(_rightNode);
+            _leftNode.PullLeftNode();
+        }
+
+        if (_rightNode)
+        {
+            _rightNode.SetLeftNode(_leftNode);
+            _rightNode.PullRightNode();
+        }
+
         //_leftNode.PullLeftNode();
         // _rightNode.PullRightNode();
         EmptyRightNode();
