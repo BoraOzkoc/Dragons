@@ -105,40 +105,6 @@ public class DragonController : MonoBehaviour, ICollectable
         return _isCaged;
     }
 
-    public void SetRightNode(DragonController dragonController)
-    {
-        if (_rightNode)
-        {
-            _rightNode.PushRightNode();
-            dragonController.SetRightNode(_rightNode);
-            _rightNode.SetLeftNodeOneTime(dragonController);
-        }
-
-        _rightNode = dragonController;
-    }
-
-    public void SetLeftNode(DragonController dragonController)
-    {
-        if (_leftNode)
-        {
-            _leftNode.PushLeftNode();
-            dragonController.SetLeftNode(_leftNode);
-            _leftNode.SetRightNodeOneTime(dragonController);
-        }
-
-        _leftNode = dragonController;
-    }
-
-    public void SetLeftNodeOneTime(DragonController dragonController)
-    {
-        _leftNode._rightNode = dragonController;
-    }
-
-    public void SetRightNodeOneTime(DragonController dragonController)
-    {
-        _rightNode._leftNode = dragonController;
-    }
-
     public void PushRightNode()
     {
         transform.DOLocalMoveX(1, 0).SetRelative(true);
@@ -163,6 +129,32 @@ public class DragonController : MonoBehaviour, ICollectable
         if (_leftNode) _leftNode.PullLeftNode();
     }
 
+    public void AddRightNode(DragonController dragonController)
+    {
+        if (_rightNode)
+        {
+            _rightNode.PushRightNode();
+            _rightNode._leftNode = dragonController;
+            dragonController._rightNode = _rightNode;
+        }
+
+        _rightNode = dragonController;
+        dragonController._leftNode = this;
+    }
+
+    public void AddLeftNode(DragonController dragonController)
+    {
+        if (_leftNode)
+        {
+            _leftNode.PushLeftNode();
+            _leftNode._rightNode = dragonController;
+            dragonController._leftNode = _leftNode;
+        }
+
+        _leftNode = dragonController;
+        dragonController._rightNode = this;
+    }
+
     private void CheckTouchPosition(DragonController dragonController)
     {
         Vector3 targetPos = transform.localPosition;
@@ -170,16 +162,14 @@ public class DragonController : MonoBehaviour, ICollectable
         {
             targetPos.x += 1;
             dragonController.MoveToTarget(targetPos);
-            SetRightNode(dragonController);
-            dragonController.SetLeftNode(this);
+            AddRightNode(dragonController);
         }
         else //Goes Left
         {
             targetPos.x -= 1;
             dragonController.MoveToTarget(targetPos);
 
-            SetLeftNode(dragonController);
-            dragonController.SetRightNode(this);
+            AddLeftNode(dragonController);
         }
 
         //dragonController.CheckNeighbourNodes();
@@ -229,13 +219,13 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         if (_leftNode)
         {
-            _leftNode.SetRightNode(_rightNode);
+            _leftNode.EmptyRightNode();
             _leftNode.PullLeftNode();
         }
 
         if (_rightNode)
         {
-            _rightNode.SetLeftNode(_leftNode);
+            _rightNode.EmptyLeftNode();
             _rightNode.PullRightNode();
         }
 
@@ -306,5 +296,15 @@ public class DragonController : MonoBehaviour, ICollectable
     private void LeaveGroup()
     {
         _groupJoined = false;
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a semitransparent red cube at the transforms position
+        Gizmos.color = new Color(0, 1, 0, 0.5f);
+        if (_leftNode) Gizmos.DrawCube(_leftNode.transform.position + (Vector3.up * 2), new Vector3(1, 1, 1));
+        if (_rightNode) Gizmos.DrawCube(_rightNode.transform.position + (Vector3.up * 2), new Vector3(1, 1, 1));
+        Gizmos.color = new Color(1, 0, 1, 0.5f);
+        Gizmos.DrawCube(transform.position + (Vector3.up * 2), new Vector3(1, 1, 1));
     }
 }
