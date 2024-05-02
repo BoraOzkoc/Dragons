@@ -20,6 +20,7 @@ public class DragonController : MonoBehaviour, ICollectable
     [SerializeField, ReadOnly] private DragonController _leftNode, _rightNode;
 
     private DragonManager _dragonManager;
+    private bool _isBlocked;
 
     private void Start()
     {
@@ -46,29 +47,98 @@ public class DragonController : MonoBehaviour, ICollectable
         CheckCollisions(other);
     }
 
+    private bool IsBlocked()
+    {
+        return _isBlocked;
+    }
+
     private void CheckCollisions(Collider other)
     {
         if (IsCaged() || !_groupJoined) return;
         if (!other.TryGetComponent(out DragonController dragonController)) return;
 
-        if (dragonController.IsCaged()) return;
+        if (dragonController.IsCaged() || dragonController.IsBlocked()) return;
         if (_groupJoined)
         {
             if (dragonController._groupJoined) return;
 
-            if (dragonController.GetNumber() == GetNumber())
-            {
-                dragonController.GetDestroyed();
-                GetMerged();
-            }
-            else
-            {
-                dragonController.JoinGroup();
-
-                _dragonManager.AddToList(dragonController);
-                CheckTouchPosition(dragonController);
-            }
+            CompareNumbers(dragonController, 0.1f);
         }
+    }
+
+    public void ToggleBlock(bool state)
+    {
+        _isBlocked = state;
+    }
+
+    private void CompareNumbers(DragonController dragonController, float delay = 0)
+    {
+        if (IsBlocked() || dragonController.IsBlocked()) return;
+
+        if (dragonController.GetNumber() == GetNumber())
+        {
+            StartCoroutine(MergeProtocol(this, dragonController, delay));
+        }
+        else
+        {
+            dragonController.JoinGroup();
+
+            _dragonManager.AddToList(dragonController);
+            CheckTouchPosition(dragonController);
+        }
+    }
+
+    IEnumerator MergeProtocol(DragonController dragon_1, DragonController dragon_2, float delay)
+    {
+        dragon_1.ToggleBlock(true);
+        dragon_2.ToggleBlock(true);
+
+
+        dragon_2.transform.DOLocalMove(dragon_1.transform.localPosition, delay - 0.1f);
+        yield return new WaitForSeconds(delay);
+
+        dragon_2.GetDestroyed();
+        dragon_1.GetMerged();
+        Reposition();
+    }
+
+    private void Reposition()
+    {
+        float leftNodeDistance = 999;
+        float rightNodeDistance = 999;
+
+        if (_leftNode)
+            leftNodeDistance = Vector3.Distance(_leftNode.transform.position, _dragonManager.transform.position);
+        if (_rightNode)
+            rightNodeDistance = Vector3.Distance(_rightNode.transform.position, _dragonManager.transform.position);
+
+        if (leftNodeDistance < rightNodeDistance)
+        {
+            MoveNextToLeftNode();
+        }
+        else
+        {
+            MoveNextToRightNode();
+        }
+    }
+
+    public void MoveNextToLeftNode()
+    {
+        if (!_leftNode) return;
+
+        Vector3 targetPos = _leftNode.transform.localPosition;
+        targetPos.x += 1;
+        transform.DOLocalMove(targetPos, 0.1f);
+        if (_rightNode) _rightNode.MoveNextToLeftNode();
+    }
+
+    public void MoveNextToRightNode()
+    {
+        if (!_rightNode) return;
+        Vector3 targetPos = _rightNode.transform.localPosition;
+        targetPos.x -= 1;
+        transform.DOLocalMove(targetPos, 0.1f);
+        if (_leftNode) _leftNode.MoveNextToRightNode();
     }
 
     private void CheckGround()
@@ -131,10 +201,12 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void AddRightNode(DragonController dragonController)
     {
+        dragonController.JoinGroup();
+        
         if (_rightNode)
         {
             _rightNode.PushRightNode();
-            _rightNode._leftNode = dragonController;
+            _rightNode.SetLeftNode(dragonController, 0.5f);
             dragonController._rightNode = _rightNode;
         }
 
@@ -144,10 +216,11 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void AddLeftNode(DragonController dragonController)
     {
+        dragonController.JoinGroup();
         if (_leftNode)
         {
             _leftNode.PushLeftNode();
-            _leftNode._rightNode = dragonController;
+            _leftNode.SetRightNode(dragonController, 0.5f);
             dragonController._leftNode = _leftNode;
         }
 
@@ -155,18 +228,34 @@ public class DragonController : MonoBehaviour, ICollectable
         dragonController._rightNode = this;
     }
 
+    public void SetRightNode(DragonController newNode, float delay = 0)
+    {
+        _rightNode = newNode;
+        CompareNumbers(newNode, delay);
+    }
+
+    public void SetLeftNode(DragonController newNode, float delay = 0)
+    {
+        _leftNode = newNode;
+        CompareNumbers(newNode, delay);
+    }
+
+
     private void CheckTouchPosition(DragonController dragonController)
     {
+        Debug.Log(gameObject.name);
         Vector3 targetPos = transform.localPosition;
         if (dragonController.transform.position.x > transform.position.x) //Goes Right
         {
             targetPos.x += 1;
+            Debug.Log("right");
             dragonController.MoveToTarget(targetPos);
             AddRightNode(dragonController);
         }
         else //Goes Left
         {
             targetPos.x -= 1;
+            Debug.Log("left");
             dragonController.MoveToTarget(targetPos);
 
             AddLeftNode(dragonController);
@@ -217,20 +306,8 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void EmptyNodes()
     {
-        if (_leftNode)
-        {
-            _leftNode.EmptyRightNode();
-            _leftNode.PullLeftNode();
-        }
+        _dragonManager.ConnectNodes(_leftNode, _rightNode);
 
-        if (_rightNode)
-        {
-            _rightNode.EmptyLeftNode();
-            _rightNode.PullRightNode();
-        }
-
-        //_leftNode.PullLeftNode();
-        // _rightNode.PullRightNode();
         EmptyRightNode();
         EmptyLeftNode();
     }
@@ -253,6 +330,7 @@ public class DragonController : MonoBehaviour, ICollectable
     public void GetMerged()
     {
         SetNumber(_number * 2);
+        ToggleBlock(false);
     }
 
     private void SetNumber(int amount)

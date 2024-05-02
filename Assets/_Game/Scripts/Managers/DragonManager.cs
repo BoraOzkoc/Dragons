@@ -75,11 +75,10 @@ public class DragonManager : MonoBehaviour
     public void RepositionList(List<DragonController> list)
     {
         List<DragonController> tempList = new List<DragonController>(_dragonList);
-       DragonController closestDragon = FindClosest(tempList);
-       
-       //do something then remove
-       tempList.Remove(closestDragon);
+        DragonController closestDragon = FindClosest(tempList);
 
+        //do something then remove
+        tempList.Remove(closestDragon);
     }
 
     private void CheckListNumber()
@@ -89,5 +88,11 @@ public class DragonManager : MonoBehaviour
             Debug.Log("fail");
             _movementController.StopMovement();
         }
+    }
+
+    public void ConnectNodes(DragonController dragon_left, DragonController dragon_right)
+    {
+        if (dragon_left) dragon_left.SetRightNode(dragon_right);
+        if (dragon_right) dragon_right.SetLeftNode(dragon_left);
     }
 }
