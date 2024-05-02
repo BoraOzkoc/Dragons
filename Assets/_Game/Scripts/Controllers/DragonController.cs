@@ -187,7 +187,7 @@ public class DragonController : MonoBehaviour, ICollectable
         if (_rightNode)
         {
             _rightNode.PushRightNode();
-            _rightNode.SetLeftNode(dragonController, 0.5f);
+            _rightNode.SetLeftNode(dragonController);
             dragonController._rightNode = _rightNode;
         }
 
@@ -201,7 +201,7 @@ public class DragonController : MonoBehaviour, ICollectable
         if (_leftNode)
         {
             _leftNode.PushLeftNode();
-            _leftNode.SetRightNode(dragonController, 0.5f);
+            _leftNode.SetRightNode(dragonController);
             dragonController._leftNode = _leftNode;
         }
 
@@ -209,16 +209,14 @@ public class DragonController : MonoBehaviour, ICollectable
         dragonController._rightNode = this;
     }
 
-    public void SetRightNode(DragonController newNode, float delay = 0)
+    public void SetRightNode(DragonController newNode)
     {
         _rightNode = newNode;
-        //CompareNumbers(newNode, delay);
     }
 
-    public void SetLeftNode(DragonController newNode, float delay = 0)
+    public void SetLeftNode(DragonController newNode)
     {
         _leftNode = newNode;
-        //CompareNumbers(newNode, delay);
     }
 
 
@@ -237,20 +235,23 @@ public class DragonController : MonoBehaviour, ICollectable
         }
 
         _dragonManager.AddToList(dragonController);
+
         dragonController.MoveToTarget(targetPos);
+
+        dragonController.CheckNeighbourNodes();
     }
 
     private void CheckNeighbourNodes()
     {
-        if (_leftNode && _leftNode.GetNumber() == GetNumber())
+        bool sameFound = false;
+        if (_leftNode)
         {
-            _leftNode.GetMerged();
-            GetDestroyed();
+            sameFound = _dragonManager.CheckIsSame(this, _leftNode);
         }
-        else if (_rightNode && _rightNode.GetNumber() == GetNumber())
+
+        if (_rightNode && !sameFound)
         {
-            _rightNode.GetMerged();
-            GetDestroyed();
+            _dragonManager.CheckIsSame(this, _rightNode);
         }
     }
 
@@ -282,7 +283,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void EmptyNodes()
     {
-        if (_leftNode && _rightNode) _dragonManager.ConnectNodes(_leftNode, _rightNode);
+        _dragonManager.ConnectNodes(_leftNode, _rightNode);
 
         EmptyRightNode();
         EmptyLeftNode();
@@ -307,6 +308,7 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         SetNumber(_number * 2);
         ToggleBlock(false);
+        CheckNeighbourNodes();
     }
 
     private void SetNumber(int amount)
@@ -343,6 +345,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void JoinGroup()
     {
+        if (_groupJoined) return;
         _groupJoined = true;
         _attackController.ToggleAttack(true);
     }

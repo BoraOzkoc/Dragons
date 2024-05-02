@@ -109,18 +109,17 @@ public class DragonManager : MonoBehaviour
             return false;
         }
     }
+
     IEnumerator MergeProtocol(DragonController dragon_1, DragonController dragon_2, float delay)
     {
         dragon_1.ToggleBlock(true);
         dragon_2.ToggleBlock(true);
 
 
-        //dragon_2.transform.DOLocalMove(dragon_1.transform.localPosition, delay - 0.1f);
-        dragon_2.GetDestroyed();
-
         yield return new WaitForSeconds(delay);
 
-        dragon_1.GetMerged();
+        dragon_2.GetDestroyed();
         dragon_1.Reposition();
+        dragon_1.GetMerged();
     }
 }
