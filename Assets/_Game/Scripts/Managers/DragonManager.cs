@@ -95,4 +95,32 @@ public class DragonManager : MonoBehaviour
         if (dragon_left) dragon_left.SetRightNode(dragon_right);
         if (dragon_right) dragon_right.SetLeftNode(dragon_left);
     }
+
+    public bool CheckIsSame(DragonController dragon_1, DragonController dragon_2)
+    {
+        if (dragon_1.GetNumber() == dragon_2.GetNumber())
+        {
+            StartCoroutine(MergeProtocol(dragon_1, dragon_2, 0.1f));
+            return true;
+        }
+        else
+        {
+            dragon_2.JoinGroup();
+            return false;
+        }
+    }
+    IEnumerator MergeProtocol(DragonController dragon_1, DragonController dragon_2, float delay)
+    {
+        dragon_1.ToggleBlock(true);
+        dragon_2.ToggleBlock(true);
+
+
+        //dragon_2.transform.DOLocalMove(dragon_1.transform.localPosition, delay - 0.1f);
+        dragon_2.GetDestroyed();
+
+        yield return new WaitForSeconds(delay);
+
+        dragon_1.GetMerged();
+        dragon_1.Reposition();
+    }
 }

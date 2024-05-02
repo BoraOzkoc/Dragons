@@ -75,34 +75,15 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         if (IsBlocked() || dragonController.IsBlocked()) return;
 
-        if (dragonController.GetNumber() == GetNumber())
-        {
-            StartCoroutine(MergeProtocol(this, dragonController, delay));
-        }
-        else
-        {
-            dragonController.JoinGroup();
+        bool isSame = _dragonManager.CheckIsSame(this, dragonController);
 
-            _dragonManager.AddToList(dragonController);
+        if (!isSame)
+        {
             CheckTouchPosition(dragonController);
         }
     }
 
-    IEnumerator MergeProtocol(DragonController dragon_1, DragonController dragon_2, float delay)
-    {
-        dragon_1.ToggleBlock(true);
-        dragon_2.ToggleBlock(true);
-
-
-        dragon_2.transform.DOLocalMove(dragon_1.transform.localPosition, delay - 0.1f);
-        yield return new WaitForSeconds(delay);
-
-        dragon_2.GetDestroyed();
-        dragon_1.GetMerged();
-        Reposition();
-    }
-
-    private void Reposition()
+    public void Reposition()
     {
         float leftNodeDistance = 999;
         float rightNodeDistance = 999;
@@ -202,7 +183,7 @@ public class DragonController : MonoBehaviour, ICollectable
     public void AddRightNode(DragonController dragonController)
     {
         dragonController.JoinGroup();
-        
+
         if (_rightNode)
         {
             _rightNode.PushRightNode();
@@ -231,37 +212,32 @@ public class DragonController : MonoBehaviour, ICollectable
     public void SetRightNode(DragonController newNode, float delay = 0)
     {
         _rightNode = newNode;
-        CompareNumbers(newNode, delay);
+        //CompareNumbers(newNode, delay);
     }
 
     public void SetLeftNode(DragonController newNode, float delay = 0)
     {
         _leftNode = newNode;
-        CompareNumbers(newNode, delay);
+        //CompareNumbers(newNode, delay);
     }
 
 
     private void CheckTouchPosition(DragonController dragonController)
     {
-        Debug.Log(gameObject.name);
         Vector3 targetPos = transform.localPosition;
         if (dragonController.transform.position.x > transform.position.x) //Goes Right
         {
             targetPos.x += 1;
-            Debug.Log("right");
-            dragonController.MoveToTarget(targetPos);
             AddRightNode(dragonController);
         }
         else //Goes Left
         {
             targetPos.x -= 1;
-            Debug.Log("left");
-            dragonController.MoveToTarget(targetPos);
-
             AddLeftNode(dragonController);
         }
 
-        //dragonController.CheckNeighbourNodes();
+        _dragonManager.AddToList(dragonController);
+        dragonController.MoveToTarget(targetPos);
     }
 
     private void CheckNeighbourNodes()
@@ -306,7 +282,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void EmptyNodes()
     {
-        _dragonManager.ConnectNodes(_leftNode, _rightNode);
+        if (_leftNode && _rightNode) _dragonManager.ConnectNodes(_leftNode, _rightNode);
 
         EmptyRightNode();
         EmptyLeftNode();
