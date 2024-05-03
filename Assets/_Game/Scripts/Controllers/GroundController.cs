@@ -59,7 +59,7 @@ public class GroundController : MonoBehaviour
 
 
                 Vector3 targetPos = pos;
-                targetPos.x += -Mesh_x_length;
+                targetPos.x += Mesh_x_length;
                 targetPos.z += Mesh_z_lengt;
 
                 ending.position = targetPos;

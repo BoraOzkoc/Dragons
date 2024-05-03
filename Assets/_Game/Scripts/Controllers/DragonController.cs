@@ -20,7 +20,7 @@ public class DragonController : MonoBehaviour, ICollectable
     [SerializeField, ReadOnly] private DragonController _leftNode, _rightNode;
 
     private DragonManager _dragonManager;
-    private bool _isBlocked;
+    private bool _isBlocked, _canGroundCheck = true;
 
     private void Start()
     {
@@ -39,7 +39,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void Update()
     {
-        CheckGround();
+        if (_canGroundCheck) CheckGround();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -122,6 +122,11 @@ public class DragonController : MonoBehaviour, ICollectable
         if (_leftNode) _leftNode.MoveNextToRightNode();
     }
 
+    private void StopGroundCheck()
+    {
+        _canGroundCheck = false;
+    }
+
     private void CheckGround()
     {
         if (!_groupJoined) return;
@@ -135,6 +140,22 @@ public class DragonController : MonoBehaviour, ICollectable
             _dragonManager.RemoveFromList(this);
             StartFalling();
         }
+    }
+
+    public void StartEndingProtocol(EndingFightController endingFightController)
+    {
+        StopGroundCheck();
+        StopAttack();
+        transform.DOMove(endingFightController.GetAllyBossPos(), 1).OnComplete(() =>
+        {
+            endingFightController.UpgradeAllyBoss(GetNumber());
+            Destroy(gameObject);
+        });
+    }
+
+    public void StopAttack()
+    {
+        _attackController.ToggleAttack(false);
     }
 
     private void StartFalling()

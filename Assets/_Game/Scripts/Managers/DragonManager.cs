@@ -32,6 +32,26 @@ public class DragonManager : MonoBehaviour
         CheckListNumber();
     }
 
+    public void StartEndingProtocol(EndingFightController endingFightController)
+    {
+        StartCoroutine(EndingCoroutine(endingFightController));
+    }
+
+    IEnumerator EndingCoroutine(EndingFightController endingFightController)
+    {
+        _movementController.StopMovement();
+        
+        TriggerDragons(endingFightController);
+        yield return new WaitForSeconds(1);
+    }
+
+    private void TriggerDragons(EndingFightController endingFightController)
+    {
+        for (int i = 0; i < _dragonList.Count; i++)
+        {
+            _dragonList[i].StartEndingProtocol(endingFightController);
+        }
+    }
     public void MoveListToLeft()
     {
         for (int i = 0; i < _dragonList.Count; i++)

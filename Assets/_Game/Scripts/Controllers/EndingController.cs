@@ -8,6 +8,7 @@ public class EndingController : MonoBehaviour
 {
     public static EndingController Instance;
     [SerializeField] private GroundController _groundController;
+    [SerializeField] private EndingFightController _endingFightController;
     private LevelController _levelController;
 
     private void Awake()
@@ -22,9 +23,10 @@ public class EndingController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out MovementController movementController))
+        if (other.TryGetComponent(out DragonManager dragonManager))
         {
-            movementController.StopMovement();
+            dragonManager.StartEndingProtocol(_endingFightController);
+            
         }
     }
 
