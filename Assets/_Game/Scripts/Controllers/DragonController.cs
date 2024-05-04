@@ -191,7 +191,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void PushRightNode()
     {
-        transform.DOLocalMoveX(1, 0).SetRelative(true);
+        transform.DOLocalMoveX(1, 0.1f).SetRelative(true);
         if (_rightNode) _rightNode.PushRightNode();
     }
 
@@ -269,9 +269,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
         _dragonManager.AddToList(dragonController);
 
-        dragonController.MoveToTarget(targetPos);
-
-        dragonController.CheckNeighbourNodes();
+        dragonController.MoveToPosition(targetPos);
     }
 
     private void CheckNeighbourNodes()
@@ -371,9 +369,9 @@ public class DragonController : MonoBehaviour, ICollectable
         _isCaged = false;
     }
 
-    public void MoveToTarget(Vector3 pos)
+    public void MoveToPosition(Vector3 pos)
     {
-        transform.localPosition = pos;
+        transform.DOLocalMove(pos, 0.1f).OnComplete(CheckNeighbourNodes);
     }
 
     public void JoinGroup()

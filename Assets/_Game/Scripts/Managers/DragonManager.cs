@@ -173,7 +173,7 @@ public class DragonManager : MonoBehaviour
     {
         if (dragon_1.GetNumber() == dragon_2.GetNumber())
         {
-            StartCoroutine(MergeProtocol(dragon_1, dragon_2, 0.1f));
+            StartCoroutine(MergeProtocol(dragon_1, dragon_2, 0.5f));
             return true;
         }
         else
@@ -196,16 +196,37 @@ public class DragonManager : MonoBehaviour
         dragon_1_distance = Vector3.Distance(dragon_1_local_pos, Vector3.zero);
         dragon_2_distance = Vector3.Distance(dragon_2_local_pos, Vector3.zero);
 
-        if (dragon_1_distance < dragon_2_distance)
+        if (!dragon_2.InGroup())
         {
-            yield return new WaitForSeconds(delay);
+            // Vector3 destination = dragon_1.transform.position;
+            // Tweener moveTween = dragon_2.transform.DOMove(destination, delay - 0.2f);
+            // moveTween.OnUpdate(() =>
+            // {
+            //     moveTween.ChangeEndValue(dragon_1.transform.position,true);
+            // });
+            //
+            // yield return new WaitForSeconds(delay);
+
             dragon_2.GetDestroyed();
             dragon_1.Reposition();
             dragon_1.GetMerged();
         }
-        else
+        else if (dragon_1_distance < dragon_2_distance)
         {
+            dragon_2.transform.DOLocalMove(dragon_1.transform.localPosition, delay - 0.1f);
+
             yield return new WaitForSeconds(delay);
+
+            dragon_2.GetDestroyed();
+            dragon_1.Reposition();
+            dragon_1.GetMerged();
+        }
+        else if (dragon_1_distance >= dragon_2_distance)
+        {
+            dragon_1.transform.DOLocalMove(dragon_2.transform.localPosition, delay - 0.1f);
+
+            yield return new WaitForSeconds(delay);
+
             dragon_1.GetDestroyed();
             dragon_2.Reposition();
             dragon_2.GetMerged();
