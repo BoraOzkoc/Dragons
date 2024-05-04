@@ -18,6 +18,52 @@ public class DragonManager : MonoBehaviour
         }
     }
 
+    public void CheckLocations()
+    {
+        int leftCount = 0, rightCount = 0;
+
+        for (int i = 0; i < _dragonList.Count; i++)
+        {
+            if (_dragonList[i].transform.localPosition.x > 0) rightCount++;
+            else leftCount++;
+        }
+
+        if (leftCount < rightCount)
+        {
+            MoveAllRight(leftCount - rightCount);
+        }
+        else if (leftCount == rightCount)
+        {
+            //do nothing
+        }
+        else
+        {
+            MoveAllLeft(rightCount - leftCount);
+        }
+    }
+
+    private void MoveAllRight(int times)
+    {
+        for (int i = 0; i < _dragonList.Count; i++)
+        {
+            for (int j = 0; j < times; j++)
+            {
+                _dragonList[i].MoveRight();
+            }
+        }
+    }
+
+    private void MoveAllLeft(int times)
+    {
+        for (int i = 0; i < _dragonList.Count; i++)
+        {
+            for (int j = 0; j < times; j++)
+            {
+                _dragonList[i].MoveLeft();
+            }
+        }
+    }
+
     public void AddToList(DragonController dragonController)
     {
         _dragonList.Add(dragonController);
@@ -40,18 +86,25 @@ public class DragonManager : MonoBehaviour
     IEnumerator EndingCoroutine(EndingFightController endingFightController)
     {
         _movementController.StopMovement();
-        
+
         TriggerDragons(endingFightController);
         yield return new WaitForSeconds(1);
     }
 
     private void TriggerDragons(EndingFightController endingFightController)
     {
+        StartCoroutine(DelayCoroutine(endingFightController));
+    }
+
+    IEnumerator DelayCoroutine(EndingFightController endingFightController)
+    {
         for (int i = 0; i < _dragonList.Count; i++)
         {
             _dragonList[i].StartEndingProtocol(endingFightController);
+            yield return new WaitForSeconds(0.3f);
         }
     }
+
     public void MoveListToLeft()
     {
         for (int i = 0; i < _dragonList.Count; i++)
@@ -103,7 +156,7 @@ public class DragonManager : MonoBehaviour
 
     private void CheckListNumber()
     {
-        if (_dragonList.Count <= 0)
+        if (_dragonList.Count <= 0 && _movementController.CanMove())
         {
             Debug.Log("fail");
             _movementController.StopMovement();
@@ -135,11 +188,27 @@ public class DragonManager : MonoBehaviour
         dragon_1.ToggleBlock(true);
         dragon_2.ToggleBlock(true);
 
+        Vector3 dragon_1_local_pos, dragon_2_local_pos;
+        dragon_1_local_pos = dragon_1.transform.localPosition;
+        dragon_2_local_pos = dragon_2.transform.localPosition;
 
-        yield return new WaitForSeconds(delay);
+        float dragon_1_distance, dragon_2_distance;
+        dragon_1_distance = Vector3.Distance(dragon_1_local_pos, Vector3.zero);
+        dragon_2_distance = Vector3.Distance(dragon_2_local_pos, Vector3.zero);
 
-        dragon_2.GetDestroyed();
-        dragon_1.Reposition();
-        dragon_1.GetMerged();
+        if (dragon_1_distance < dragon_2_distance)
+        {
+            yield return new WaitForSeconds(delay);
+            dragon_2.GetDestroyed();
+            dragon_1.Reposition();
+            dragon_1.GetMerged();
+        }
+        else
+        {
+            yield return new WaitForSeconds(delay);
+            dragon_1.GetDestroyed();
+            dragon_2.Reposition();
+            dragon_2.GetMerged();
+        }
     }
 }

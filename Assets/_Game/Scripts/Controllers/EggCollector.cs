@@ -6,6 +6,7 @@ using UnityEngine;
 public class EggCollector : MonoBehaviour
 {
     private DragonController _dragonController;
+
     private void Start()
     {
         _dragonController = GetComponent<DragonController>();
@@ -17,7 +18,7 @@ public class EggCollector : MonoBehaviour
         {
             if (other.TryGetComponent(out CollectableController collectable))
             {
-                collectable.GetCollected(transform.position);
+                if (!collectable.IsCollected()) collectable.GetCollected(transform.position);
             }
         }
     }

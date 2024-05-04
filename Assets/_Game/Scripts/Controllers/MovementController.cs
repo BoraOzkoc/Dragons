@@ -27,6 +27,10 @@ public class MovementController : MonoBehaviour
         ClampSideMovement();
     }
 
+    public bool CanMove()
+    {
+        return _canMove;
+    }
     public void StopMovement()
     {
         _canMove = false;

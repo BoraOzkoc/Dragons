@@ -146,11 +146,23 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         StopGroundCheck();
         StopAttack();
-        transform.DOMove(endingFightController.GetAllyBossPos(), 1).OnComplete(() =>
+        Vector3 targetPos = endingFightController.GetAllyBossPos();
+        targetPos.y = transform.position.y;
+        transform.DOMove(targetPos, 1).SetEase(Ease.Linear).OnComplete(() =>
         {
             endingFightController.UpgradeAllyBoss(GetNumber());
-            Destroy(gameObject);
+            GetDestroyed();
         });
+    }
+
+    public void MoveLeft()
+    {
+        transform.DOLocalMoveX(-1, 0.1f).SetRelative(true);
+    }
+
+    public void MoveRight()
+    {
+        transform.DOLocalMoveX(1, 0.1f).SetRelative(true);
     }
 
     public void StopAttack()

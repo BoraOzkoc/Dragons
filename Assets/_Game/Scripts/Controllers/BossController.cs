@@ -34,7 +34,7 @@ public class BossController : MonoBehaviour
         if (!_mesh.activeSelf) _mesh.SetActive(true);
         _health += amount;
         UpdateText();
-        _mesh.transform.localScale += Vector3.one * amount / 2;
+        _mesh.transform.localScale += Vector3.one * amount / 30;
     }
 
     public bool IsDead()
