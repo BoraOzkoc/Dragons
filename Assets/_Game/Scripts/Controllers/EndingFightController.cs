@@ -20,7 +20,7 @@ public class EndingFightController : MonoBehaviour
         return _allyBoss;
     }
 
-    public void UpgradeAllyBoss(float amount)
+    public void UpgradeAllyBoss(int amount)
     {
         _allyBoss.Upgrade(amount);
     }

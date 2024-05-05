@@ -11,10 +11,12 @@ public class AttackController : MonoBehaviour
     [SerializeField] private float _waitBetweenAttacks, _projectileSpeed;
     [SerializeField] private float _projectileLifeTime;
     [SerializeField] private Transform _firePoint;
-    [SerializeField] private DragonController _dragonController;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private BossController _bossController;
     private bool _canAttack;
     private PoolingManager _poolingManager;
     private Coroutine _attackCoroutine;
+    private string _fireTrigger = "Base Layer.SFly Attack FireBall";
 
     private void Start()
     {
@@ -27,6 +29,10 @@ public class AttackController : MonoBehaviour
         if (state) _attackCoroutine ??= StartCoroutine(AttackCoroutine());
     }
 
+    public bool GetAttackState()
+    {
+        return _canAttack;
+    }
 
     public void SetDamage(int amount)
     {
@@ -37,15 +43,16 @@ public class AttackController : MonoBehaviour
     {
         while (_canAttack)
         {
-            Fire();
+            _animator.Play(_fireTrigger, 0, 0f);
+
             yield return new WaitForSeconds(_waitBetweenAttacks);
         }
     }
 
-    private void Fire()
+    public void Fire()
     {
         FireBallController fireBallController = _poolingManager.PullFromPool();
         fireBallController.SetStats(_projectileLifeTime, _projectileSpeed, _damage);
-        fireBallController.Activate(_firePoint.position);
+        fireBallController.Activate(_firePoint.position, transform.forward, _bossController);
     }
 }

@@ -7,39 +7,88 @@ using UnityEngine;
 
 public class BossController : MonoBehaviour
 {
-    [SerializeField, ReadOnly] private BossController _targetBoss;
-    [SerializeField] private float _health, _moveSpeed, _damage_, range;
+    public Type BossType;
+    [SerializeField] private BossController _targetBoss;
+    [SerializeField] private int _health, _damage_;
+    [SerializeField] private float _moveSpeed, range;
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField] private GameObject _mesh;
     [SerializeField] private bool _isDead;
-    private bool _isMoving;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private AttackController _attackController;
+    private bool _canFight, _isAttacking;
 
+    public enum Type
+    {
+        Ally,
+        Enemy
+    }
+
+    private void OnEnable()
+    {
+        GameManager.LevelCompletedEvent += StopEveryThing;
+        GameManager.LevelFailedEvent += StopEveryThing;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.LevelCompletedEvent -= StopEveryThing;
+        GameManager.LevelFailedEvent -= StopEveryThing;
+    }
+
+    private void Start()
+    {
+        UpdateDamage();
+    }
+
+    private void StopEveryThing()
+    {
+        _canFight = false;
+        ToggleAttack(false);
+    }
 
     public void StartAttacking()
     {
         StartCoroutine(MoveTowardsTarget());
     }
 
-    private void AttackEnemy()
+    public void AttackEndedEvent()
     {
-        if (!_targetBoss) return;
-        if (!_targetBoss.IsDead())
-        {
-            _targetBoss.TakeDamage(_damage_);
-        }
+        ResetAttack();
     }
 
-    public void Upgrade(float amount)
+    private void ResetAttack()
+    {
+        _isAttacking = false;
+    }
+
+    public void Upgrade(int amount)
     {
         if (!_mesh.activeSelf) _mesh.SetActive(true);
         _health += amount;
         UpdateText();
         _mesh.transform.localScale += Vector3.one * amount / 30;
+        UpdateDamage();
+    }
+
+    private void UpdateDamage()
+    {
+        _damage_ = _health;
+        _attackController.SetDamage(_damage_);
     }
 
     public bool IsDead()
     {
         return _isDead;
+    }
+
+    private void ToggleAttack(bool state)
+    {
+        if (state != _attackController.GetAttackState())
+        {
+            Debug.Log("toggle attack called : " + state);
+            _attackController.ToggleAttack(state);
+        }
     }
 
     private bool EnemyInRange()
@@ -53,10 +102,11 @@ public class BossController : MonoBehaviour
 
     IEnumerator MoveTowardsTarget()
     {
-        _isMoving = true;
+        _canFight = true;
 
-        while (_isMoving)
+        while (_canFight)
         {
+
             if (!_targetBoss)
             {
                 Debug.LogWarning("Target is not set!");
@@ -65,24 +115,34 @@ public class BossController : MonoBehaviour
 
             // Calculate direction to target
             Vector3 direction = _targetBoss.transform.position - transform.position;
-            direction.y = 0f; // Ensure movement is only along the XZ plane
+            direction.y = 0f;
 
             // If within stopping distance, stop moving
             if (direction.magnitude <= range)
             {
-                _isMoving = false;
-                AttackEnemy();
+                if (_targetBoss.IsDead() || IsDead()) ToggleAttack(false);
+                else
+                {
+                    ToggleAttack(true);
+                }
+
                 yield break;
             }
+            else
+            {
+                Debug.Log("in else");
 
-            // Move towards the target
-            transform.position += direction.normalized * _moveSpeed * Time.deltaTime;
+                ToggleAttack(false);
+
+                transform.position += direction.normalized * _moveSpeed * Time.deltaTime;
+            }
+
 
             yield return null;
         }
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(int amount)
     {
         _health -= amount;
         CheckHealth();
@@ -92,7 +152,21 @@ public class BossController : MonoBehaviour
     {
         if (_health <= 0)
         {
+            _health = 0;
             //death
+            _isDead = true;
+            if (BossType == Type.Enemy)
+            {
+                Debug.Log("win condition");
+                GameManager.Instance.LevelCompleted();
+            }
+            else
+            {
+                Debug.Log("lose condition");
+                GameManager.Instance.GameFailed();
+            }
+
+            PoolingManager.Instance.ClearAll();
         }
 
         UpdateText();

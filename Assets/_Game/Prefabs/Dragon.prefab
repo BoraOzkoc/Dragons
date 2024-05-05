@@ -356,7 +356,8 @@ Transform:
   m_LocalPosition: {x: 0.121396944, y: 0.11222339, z: 0.00011511388}
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5650226514521975132}
   m_Father: {fileID: 1091651317257784717}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1149759753494879842
@@ -5379,6 +5380,37 @@ Transform:
   m_Children:
   - {fileID: 7899540558808721033}
   m_Father: {fileID: 2261237241435127558}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3708732373525805839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5650226514521975132}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5650226514521975132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708732373525805839}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.057, y: -0.0403, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8596611738322614037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4104020165048691787
 GameObject:
@@ -10725,7 +10757,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5345222031197863958}
-  - component: {fileID: 6390875195600250231}
   m_Layer: 20
   m_Name: LDSea Poly Art
   m_TagString: Animal
@@ -10750,27 +10781,6 @@ Transform:
   - {fileID: 669706291506398210}
   m_Father: {fileID: 4739907500054515964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &6390875195600250231
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6795720235650608051}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 1b72df35f43432243b9bd400c4441147, type: 3}
-  m_Controller: {fileID: 9100000, guid: 955a8ce47d1faab4b9b5932ddf75530d, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6922681145750417672
 GameObject:
   m_ObjectHideFlags: 0
@@ -10946,6 +10956,7 @@ GameObject:
   - component: {fileID: 4440521303445981966}
   - component: {fileID: 3633947359436480864}
   - component: {fileID: 790813347170331273}
+  - component: {fileID: 5957479170725665285}
   m_Layer: 0
   m_Name: Dragon
   m_TagString: Untagged
@@ -11110,8 +11121,9 @@ MonoBehaviour:
   _waitBetweenAttacks: 1
   _projectileSpeed: 10
   _projectileLifeTime: 1
-  _firePoint: {fileID: 6757621515529576485}
-  _dragonController: {fileID: 4440521303445981966}
+  _firePoint: {fileID: 5650226514521975132}
+  _animator: {fileID: 5957479170725665285}
+  _bossController: {fileID: 0}
 --- !u!114 &790813347170331273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11124,6 +11136,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43654f341ca2d574d9771eedcb53a88d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dragonController: {fileID: 4440521303445981966}
+--- !u!95 &5957479170725665285
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7545314748770446646}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 1b72df35f43432243b9bd400c4441147, type: 3}
+  m_Controller: {fileID: 9100000, guid: 955a8ce47d1faab4b9b5932ddf75530d, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7574361684040203689
 GameObject:
   m_ObjectHideFlags: 0

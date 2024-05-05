@@ -11,13 +11,14 @@ public class PoolingManager : MonoBehaviour
     [SerializeField] private int poolSize;
     private Queue<FireBallController> pooledObjectQueue;
 
+    private List<FireBallController> _activeFireBallList = new List<FireBallController>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);
         else Instance = this;
-        
-        SpawnObjects();
 
+        SpawnObjects();
     }
 
     private void Start()
@@ -38,6 +39,14 @@ public class PoolingManager : MonoBehaviour
         }
     }
 
+    public void ClearAll()
+    {
+        for (int i = 0; i < _activeFireBallList.Count; i++)
+        {
+            PushToPool(_activeFireBallList[i]);
+        }
+    }
+
     public FireBallController PullFromPool()
     {
         FireBallController spawnedObject = pooledObjectQueue.Dequeue();
@@ -47,12 +56,14 @@ public class PoolingManager : MonoBehaviour
             SpawnObjects();
         }
 
-
+        _activeFireBallList.Add(spawnedObject);
         return spawnedObject;
     }
 
     public void PushToPool(FireBallController obj)
     {
+        _activeFireBallList.Remove(obj);
+
         obj.gameObject.SetActive(false);
         obj.transform.position = transform.position;
         pooledObjectQueue.Enqueue(obj);

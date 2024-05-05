@@ -4169,7 +4169,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -4206,7 +4206,14 @@ ModelImporter:
           preInfinity: 3
           postInfinity: 3
           rotationOrder: 0
-      events: []
+      events:
+      - time: 0.20505053
+        functionName: Fire
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 0a8eb5990b8b97a4fb55135500d9335c, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

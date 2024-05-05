@@ -103,6 +103,9 @@ public class DragonManager : MonoBehaviour
             _dragonList[i].StartEndingProtocol(endingFightController);
             yield return new WaitForSeconds(0.3f);
         }
+        yield return new WaitForSeconds(1);
+
+        endingFightController.ActivateFight();
     }
 
     public void MoveListToLeft()

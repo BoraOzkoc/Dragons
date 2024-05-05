@@ -197,7 +197,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void PushLeftNode()
     {
-        transform.DOLocalMoveX(-1, 0).SetRelative(true);
+        transform.DOLocalMoveX(-1, 0.1f).SetRelative(true);
         if (_leftNode) _leftNode.PushLeftNode();
     }
 

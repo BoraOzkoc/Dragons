@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EggCollector : MonoBehaviour
 {
-    private DragonController _dragonController;
+    [SerializeField] private DragonController _dragonController;
 
     private void Start()
     {

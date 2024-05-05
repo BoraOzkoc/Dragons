@@ -26,7 +26,7 @@ public class EndingController : MonoBehaviour
         if (other.TryGetComponent(out DragonManager dragonManager))
         {
             dragonManager.StartEndingProtocol(_endingFightController);
-            
+            CameraManager.Instance.ActivateEndCamera();
         }
     }
 

@@ -8,6 +8,7 @@ public class FireBallController : MonoBehaviour
     [SerializeField] private float _lifeTime, _speed;
     [SerializeField] private int _damage;
     private PoolingManager _poolingManager;
+    private BossController _owner;
 
     public void Init(PoolingManager poolingManager)
     {
@@ -25,10 +26,21 @@ public class FireBallController : MonoBehaviour
     {
     }
 
-    public void Activate(Vector3 pos)
+    public void Activate(Vector3 spawnPos, Vector3 direction,BossController owner = null)
     {
-        TeleportObject(pos);
+        SetOwner(owner);
+        TeleportObject(spawnPos);
+        FaceDirection(direction);
         StartLifeTimer();
+    }
+
+    private void SetOwner(BossController owner)
+    {
+        _owner = owner;
+    }
+    private void FaceDirection(Vector3 direction)
+    {
+        transform.LookAt(transform.position + direction);
     }
 
     private void StartLifeTimer()
@@ -64,6 +76,13 @@ public class FireBallController : MonoBehaviour
             obstacleController.DecreaseNumber(_damage);
 
             Deactivate();
+        }
+
+        if (!_owner) return;
+        if (!other.TryGetComponent(out BossController bossController)) return;
+        if (bossController != _owner)
+        {
+            bossController.TakeDamage(_damage);
         }
     }
 
