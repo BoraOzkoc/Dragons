@@ -36,6 +36,8 @@ public class FireBallController : MonoBehaviour
 
     public void ActivateFakeFireBall(Vector3 spawnPos, TowerController towerController)
     {
+        TeleportObject(spawnPos);
+
         transform.DOMove(towerController.transform.position, 1).OnComplete(() =>
         {
             towerController.GetHit();

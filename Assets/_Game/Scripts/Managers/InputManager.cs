@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour
     private Vector2 firstClickPos = Vector2.zero;
     private Vector2 lastClickPos = Vector2.zero;
     private float delta_x, delta_y;
-
+    
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(gameObject);

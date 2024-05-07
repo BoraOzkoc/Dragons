@@ -55,7 +55,7 @@ public class BossController : MonoBehaviour
 
     public void Attack()
     {
-        if (HasHealthToFire()) _animator.Play(_fireTrigger, 0, 0f);
+        if (HasHealthToFire() && !_target.IsDestroyed()) _animator.Play(_fireTrigger, 0, 0f);
     }
 
     public void Fire()
@@ -87,13 +87,14 @@ public class BossController : MonoBehaviour
         if (_health <= 0)
         {
             _health = 0;
+            GameManager.Instance.LevelCompleted();
             GetDestroyed();
         }
     }
 
     private void GetDestroyed()
     {
-        Debug.Log("Play Effect");
+        Debug.Log("Play destroy Effect");
         Destroy(gameObject);
     }
 
