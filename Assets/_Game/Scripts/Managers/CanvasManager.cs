@@ -32,10 +32,17 @@ public class CanvasManager : MonoBehaviour
     {
     }
 
+    public void Reset()
+    {
+        _winGroup.SetActive(false);
+        _failGroup.SetActive(false);
+        _canvasGroup.DOFade(0, 0);
+
+    }
+
     private void GameCompletedEvent()
     {
         StartCoroutine(LevelCompletedEvent());
-        
     }
 
     IEnumerator LevelCompletedEvent()
@@ -43,8 +50,8 @@ public class CanvasManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         ToggleGroups(true);
         _canvasGroup.DOFade(1, 1).OnComplete(() => ToggleCanvas(true));
-
     }
+
     private void ToggleCanvas(bool state)
     {
         _canvasGroup.interactable = state;

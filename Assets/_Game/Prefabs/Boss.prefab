@@ -5300,6 +5300,7 @@ MonoBehaviour:
   range: 20
   _healthText: {fileID: 3655837322027900065}
   _mesh: {fileID: 4386426925775194204}
+  _firePoint: {fileID: 6867052076212268228}
   _isDead: 0
   _animator: {fileID: 6990364470845350636}
 --- !u!95 &6990364470845350636

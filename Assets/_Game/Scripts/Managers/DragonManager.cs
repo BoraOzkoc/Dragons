@@ -8,14 +8,39 @@ public class DragonManager : MonoBehaviour
 {
     [SerializeField] private List<DragonController> _dragonList = new List<DragonController>();
     [SerializeField] private MovementController _movementController;
+    private bool _attackState;
 
     private void Start()
     {
         for (int i = 0; i < _dragonList.Count; i++)
         {
-            _dragonList[i].JoinGroup();
             _dragonList[i].Init(this);
+            _dragonList[i].JoinGroup();
         }
+    }
+
+    private void OnEnable()
+    {
+        GameManager.GameStartedEvent += GameStartedEvent;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.GameStartedEvent -= GameStartedEvent;
+    }
+
+    private void GameStartedEvent()
+    {
+        _attackState = true;
+        for (int i = 0; i < _dragonList.Count; i++)
+        {
+            _dragonList[i].GetAttackController().ToggleAttack(_attackState);
+        }
+    }
+
+    public bool GetAttackState()
+    {
+        return _attackState;
     }
 
     public void CheckLocations()
@@ -103,6 +128,7 @@ public class DragonManager : MonoBehaviour
             _dragonList[i].StartEndingProtocol(endingFightController);
             yield return new WaitForSeconds(0.3f);
         }
+
         yield return new WaitForSeconds(1);
 
         endingFightController.ActivateFight();
@@ -181,6 +207,7 @@ public class DragonManager : MonoBehaviour
         }
         else
         {
+            dragon_2.Init(this);
             dragon_2.JoinGroup();
             return false;
         }

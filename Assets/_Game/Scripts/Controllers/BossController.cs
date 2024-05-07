@@ -13,13 +13,21 @@ public class BossController : MonoBehaviour
     [SerializeField] private float _moveSpeed, range;
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField] private GameObject _mesh;
+    [SerializeField] private Transform _firePoint;
     [SerializeField] private bool _isDead;
     [SerializeField] private Animator _animator;
     private bool _canFight, _isAttacking;
+    private PoolingManager _poolingManager;
+    private string _fireTrigger = "Base Layer.SFly Attack FireBall";
 
     public enum Type
     {
         Ally
+    }
+
+    private void Start()
+    {
+        _poolingManager = PoolingManager.Instance;
     }
 
     private void OnEnable()
@@ -33,7 +41,7 @@ public class BossController : MonoBehaviour
         GameManager.LevelCompletedEvent -= StopEveryThing;
         GameManager.LevelFailedEvent -= StopEveryThing;
     }
-    
+
     private void StopEveryThing()
     {
         _canFight = false;
@@ -45,10 +53,22 @@ public class BossController : MonoBehaviour
         _canFight = true;
     }
 
+    public void Attack()
+    {
+        _animator.Play(_fireTrigger, 0, 0f);
+    }
+
+    public void Fire()
+    {
+        FireBallController fireBallController = _poolingManager.PullFromPool();
+        fireBallController.ActivateFakeFireBall(_firePoint.position, _target);
+    }
+
     public bool CanFight()
     {
         return _canFight;
     }
+
     public void AttackEndedEvent()
     {
         ResetAttack();
@@ -66,7 +86,7 @@ public class BossController : MonoBehaviour
         UpdateText();
         _mesh.transform.localScale += Vector3.one * amount / 30;
     }
-    
+
     public bool IsDead()
     {
         return _isDead;
@@ -74,7 +94,6 @@ public class BossController : MonoBehaviour
 
     private void ToggleAttack(bool state)
     {
-       
     }
 
     private void UpdateText()

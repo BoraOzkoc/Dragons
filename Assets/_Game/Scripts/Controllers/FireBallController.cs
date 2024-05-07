@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class FireBallController : MonoBehaviour
@@ -26,17 +27,24 @@ public class FireBallController : MonoBehaviour
     {
     }
 
-    public void Activate(Vector3 spawnPos, Vector3 direction)
+    public void ActivateDefault(Vector3 spawnPos, Vector3 direction)
     {
         TeleportObject(spawnPos);
         FaceDirection(direction);
         StartLifeTimer();
     }
 
+    public void ActivateFakeFireBall(Vector3 spawnPos, TowerController towerController)
+    {
+        towerController.GetHit();
+        transform.DOMove(towerController.transform.position, 1).OnComplete(() => { _poolingManager.PushToPool(this); });
+    }
+
     private void SetOwner(BossController owner)
     {
         _owner = owner;
     }
+
     private void FaceDirection(Vector3 direction)
     {
         transform.LookAt(transform.position + direction);

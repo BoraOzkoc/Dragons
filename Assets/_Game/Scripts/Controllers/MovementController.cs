@@ -15,6 +15,22 @@ public class MovementController : MonoBehaviour
         _inputManager = InputManager.Instance;
     }
 
+    private void OnEnable()
+    {
+        GameManager.GameStartedEvent += GameStartedEvent;
+    }
+
+
+    private void OnDisable()
+    {
+        GameManager.GameStartedEvent -= GameStartedEvent;
+
+    }
+
+    private void GameStartedEvent()
+    { 
+        StartMovement();
+    }
     void LateUpdate()
     {
         if (!_canMove) return;
@@ -27,6 +43,10 @@ public class MovementController : MonoBehaviour
         ClampSideMovement();
     }
 
+    private void StartMovement()
+    {
+        _canMove = true;
+    }
     public bool CanMove()
     {
         return _canMove;

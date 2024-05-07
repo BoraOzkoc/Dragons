@@ -378,7 +378,12 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         if (_groupJoined) return;
         _groupJoined = true;
-        _attackController.ToggleAttack(true);
+        _attackController.ToggleAttack(_dragonManager.GetAttackState());
+    }
+
+    public AttackController GetAttackController()
+    {
+        return _attackController;
     }
 
     private void LeaveGroup()

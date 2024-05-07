@@ -30,10 +30,12 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
     }
+
     public string GetLevelSaveName()
     {
         return _level;
     }
+
     public void StartGame()
     {
         if (!_levelStarted)
@@ -43,10 +45,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_levelStarted) return;
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartGame();
+        }
+    }
+
     public void RepeatLevel()
     {
         int level = PlayerPrefs.GetInt(_level, 0);
-       
+
         DOTween.KillAll();
         _activeLevel.GetDestroyed();
         PlayerPrefs.SetInt(_level, level);
@@ -70,6 +81,7 @@ public class GameManager : MonoBehaviour
             level++;
             PlayerPrefs.SetInt(_level, level);
         }
+
         SpawnLevel(level);
     }
 
@@ -77,9 +89,10 @@ public class GameManager : MonoBehaviour
     {
         ResetStatus();
         if (level >= levelList.Count) level = Random.Range(0, levelList.Count);
-        
+
         _activeLevel = Instantiate(levelList[level]);
     }
+
     public bool GameHasStarted()
     {
         return _levelStarted;
