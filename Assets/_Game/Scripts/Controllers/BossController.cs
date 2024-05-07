@@ -55,18 +55,46 @@ public class BossController : MonoBehaviour
 
     public void Attack()
     {
-        _animator.Play(_fireTrigger, 0, 0f);
+        if (HasHealthToFire()) _animator.Play(_fireTrigger, 0, 0f);
     }
 
     public void Fire()
     {
+        TakeDamage();
         FireBallController fireBallController = _poolingManager.PullFromPool();
         fireBallController.ActivateFakeFireBall(_firePoint.position, _target);
+    }
+
+    private bool HasHealthToFire()
+    {
+        return _health >= 2;
     }
 
     public bool CanFight()
     {
         return _canFight;
+    }
+
+    private void TakeDamage()
+    {
+        _health -= 2;
+        CheckHealth();
+        UpdateText();
+    }
+
+    private void CheckHealth()
+    {
+        if (_health <= 0)
+        {
+            _health = 0;
+            GetDestroyed();
+        }
+    }
+
+    private void GetDestroyed()
+    {
+        Debug.Log("Play Effect");
+        Destroy(gameObject);
     }
 
     public void AttackEndedEvent()

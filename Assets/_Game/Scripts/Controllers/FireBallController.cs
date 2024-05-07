@@ -36,8 +36,11 @@ public class FireBallController : MonoBehaviour
 
     public void ActivateFakeFireBall(Vector3 spawnPos, TowerController towerController)
     {
-        towerController.GetHit();
-        transform.DOMove(towerController.transform.position, 1).OnComplete(() => { _poolingManager.PushToPool(this); });
+        transform.DOMove(towerController.transform.position, 1).OnComplete(() =>
+        {
+            towerController.GetHit();
+            _poolingManager.PushToPool(this);
+        });
     }
 
     private void SetOwner(BossController owner)
