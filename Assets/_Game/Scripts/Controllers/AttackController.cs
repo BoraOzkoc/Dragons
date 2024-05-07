@@ -53,6 +53,6 @@ public class AttackController : MonoBehaviour
     {
         FireBallController fireBallController = _poolingManager.PullFromPool();
         fireBallController.SetStats(_projectileLifeTime, _projectileSpeed, _damage);
-        fireBallController.Activate(_firePoint.position, transform.forward, _bossController);
+        fireBallController.Activate(_firePoint.position, transform.forward);
     }
 }

@@ -5254,9 +5254,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1103378048866741804}
   - component: {fileID: 6146962315888907360}
-  - component: {fileID: 6109651620559059695}
   - component: {fileID: 6990364470845350636}
   - component: {fileID: 6163499983379968039}
+  - component: {fileID: 4978608128445084317}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -5292,7 +5292,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd33a7ead9019bf479121bf65bffb3c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetBoss: {fileID: 0}
+  BossType: 0
+  _target: {fileID: 0}
   _health: 100
   _damage_: 10
   _moveSpeed: 10
@@ -5301,26 +5302,6 @@ MonoBehaviour:
   _mesh: {fileID: 4386426925775194204}
   _isDead: 0
   _animator: {fileID: 6990364470845350636}
-  _attackController: {fileID: 6109651620559059695}
---- !u!114 &6109651620559059695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2470850622629502589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a8eb5990b8b97a4fb55135500d9335c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _damage: 0
-  _waitBetweenAttacks: 1
-  _projectileSpeed: 10
-  _projectileLifeTime: 5
-  _firePoint: {fileID: 6867052076212268228}
-  _animator: {fileID: 6990364470845350636}
-  _bossController: {fileID: 6146962315888907360}
 --- !u!95 &6990364470845350636
 Animator:
   serializedVersion: 5
@@ -5363,6 +5344,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 3, z: 3}
   m_Center: {x: 0, y: 1.5, z: 0.45}
+--- !u!114 &4978608128445084317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2470850622629502589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 876e6bb29cf75dc4ebdbf8c4b8556d3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bossController: {fileID: 6146962315888907360}
 --- !u!1 &2545324034476344404
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class EndingFightController : MonoBehaviour
 {
-    [SerializeField] private BossController _enemyBoss;
     [SerializeField] private BossController _allyBoss;
 
 
     public void ActivateFight()
     {
-        if (!_allyBoss || !_enemyBoss) return;
-        _enemyBoss.StartAttacking();
+        if (!_allyBoss) return;
         _allyBoss.StartAttacking();
     }
 

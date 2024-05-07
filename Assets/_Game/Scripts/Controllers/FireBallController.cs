@@ -26,9 +26,8 @@ public class FireBallController : MonoBehaviour
     {
     }
 
-    public void Activate(Vector3 spawnPos, Vector3 direction,BossController owner = null)
+    public void Activate(Vector3 spawnPos, Vector3 direction)
     {
-        SetOwner(owner);
         TeleportObject(spawnPos);
         FaceDirection(direction);
         StartLifeTimer();
@@ -79,11 +78,10 @@ public class FireBallController : MonoBehaviour
         }
 
         if (!_owner) return;
-        if (!other.TryGetComponent(out BossController bossController)) return;
-        if (bossController != _owner)
-        {
-            bossController.TakeDamage(_damage);
-        }
+        if (!other.TryGetComponent(out TowerController towerController)) return;
+
+
+        towerController.GetHit();
     }
 
     private void TeleportObject(Vector3 pos)
