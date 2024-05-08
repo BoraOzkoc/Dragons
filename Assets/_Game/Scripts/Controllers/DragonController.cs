@@ -12,6 +12,8 @@ using UnityEngine.Serialization;
 public class DragonController : MonoBehaviour, ICollectable
 {
     [SerializeField] private int _number;
+    [SerializeField] private SkinnedMeshRenderer _mesh;
+    [SerializeField] private List<Material> materialList = new List<Material>();
     [SerializeField] private bool _isCaged;
     [SerializeField] private bool _groupJoined;
     [SerializeField] private TextMeshPro _numberText;
@@ -21,6 +23,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private DragonManager _dragonManager;
     private bool _isBlocked, _canGroundCheck = true;
+    private int _level = 0;
 
     private void Start()
     {
@@ -288,6 +291,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void GetDestroyed(float seconds = 0)
     {
+        transform.DOKill();
         if (_groupJoined)
         {
             EmptyNodes();
@@ -340,6 +344,14 @@ public class DragonController : MonoBehaviour, ICollectable
         SetNumber(_number * 2);
         ToggleBlock(false);
         CheckNeighbourNodes();
+        SetMeshMaterial();
+    }
+
+    private void SetMeshMaterial()
+    {
+        _level += 1;
+        if (_level == materialList.Count - 1) _level = materialList.Count - 1;
+        _mesh.material = materialList[_level];
     }
 
     private void SetNumber(int amount)

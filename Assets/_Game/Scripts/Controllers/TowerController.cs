@@ -12,30 +12,59 @@ public class TowerController : MonoBehaviour
     [SerializeField] private int _maxHealth, _currentHealth;
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField, ReadOnly] private int _storedDamage, _totalFloorCount;
+    private string _towerHealthSaveName = "TowerHealth", _storedDamageSaveName = "StoredDamage";
+    private bool _isDestroyed;
 
     private void Start()
     {
-        SetCurrentHealth(_maxHealth);
-        UpdateText();
         SetTotalFloorCount();
+        Load();
     }
 
     private void SetTotalFloorCount()
     {
         _totalFloorCount = meshList.Count;
     }
+
     private void Save()
     {
+        PlayerPrefs.SetInt(_towerHealthSaveName, _currentHealth);
+        PlayerPrefs.SetInt(_storedDamageSaveName, _storedDamage);
     }
 
     private void Load()
     {
+        int health = PlayerPrefs.GetInt(_towerHealthSaveName, _maxHealth);
+        int storedDamage = PlayerPrefs.GetInt(_storedDamageSaveName, 0);
+
+        if (health <= 0)
+        {
+            ResetTower();
+            health = _maxHealth;
+            storedDamage = 0;
+        }
+
+        _storedDamage = storedDamage;
+        SetCurrentHealth(health);
+        UpdateText();
+        if (health != _maxHealth) LowerTower(Mathf.Abs(health - _maxHealth) / (_maxHealth / _totalFloorCount));
+    }
+
+    private void ResetTower()
+    {
+        PlayerPrefs.SetInt(_towerHealthSaveName, _maxHealth);
+        PlayerPrefs.SetInt(_storedDamageSaveName, 0);
     }
 
     private void SetCurrentHealth(int amount)
     {
         _currentHealth = amount;
         UpdateText();
+    }
+
+    public bool IsDestroyed()
+    {
+        return _isDestroyed;
     }
 
     [Button]
@@ -46,6 +75,7 @@ public class TowerController : MonoBehaviour
         CheckStoredDamage();
         UpdateText();
         CheckHealth();
+        Save();
     }
 
     private void CheckStoredDamage()
@@ -54,7 +84,7 @@ public class TowerController : MonoBehaviour
         if (_storedDamage >= targetAmount)
         {
             _storedDamage = _storedDamage - targetAmount;
-            LowerTower();            
+            LowerTower();
         }
     }
 
@@ -68,13 +98,13 @@ public class TowerController : MonoBehaviour
         }
     }
 
-    private void LowerTower()
+    private void LowerTower(int times = 1)
     {
         IEnumerator MoveCoroutine()
         {
             for (int i = 0; i < meshList.Count; i++)
             {
-                meshList[i].transform.DOLocalMoveY(-GetMeshLength_y(), 0.05f).SetRelative(true);
+                meshList[i].transform.DOLocalMoveY(-GetMeshLength_y() * times, 0.05f).SetRelative(true);
                 yield return new WaitForSeconds(0.02f);
             }
         }
