@@ -365,6 +365,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 5181dc9cd56d71b4bb76b0aa614145ca, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f9e5a32439634df4f8fe9222a1e63a8c, type: 2}
     - target: {fileID: 919132149155446097, guid: 5181dc9cd56d71b4bb76b0aa614145ca, type: 3}
       propertyPath: m_Name
       value: dragons_fireball
