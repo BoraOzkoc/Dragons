@@ -11,6 +11,8 @@ public class TowerController : MonoBehaviour
     [SerializeField] private List<GameObject> meshList = new List<GameObject>();
     [SerializeField] private int _maxHealth, _currentHealth;
     [SerializeField] private TextMeshPro _healthText;
+    [SerializeField] private PrincessController _princessController;
+    [SerializeField] private Transform _towerTip;
     [SerializeField, ReadOnly] private int _storedDamage, _totalFloorCount;
     private string _towerHealthSaveName = "TowerHealth", _storedDamageSaveName = "StoredDamage";
     private bool _isDestroyed;
@@ -93,6 +95,7 @@ public class TowerController : MonoBehaviour
         if (_currentHealth <= 0)
         {
             _currentHealth = 0;
+            _princessController.PlayCheerAnim();
             UpdateText();
             GameManager.Instance.LevelCompleted();
         }
@@ -104,7 +107,10 @@ public class TowerController : MonoBehaviour
         {
             for (int i = 0; i < meshList.Count; i++)
             {
-                meshList[i].transform.DOLocalMoveY(-GetMeshLength_y() * times, 0.05f).SetRelative(true);
+                meshList[i].transform.DOLocalMoveY(-GetMeshLength_y() * times, 0.05f).SetRelative(true).OnComplete(() =>
+                {
+                    _princessController.MoveTo(_towerTip.position);
+                });
                 yield return new WaitForSeconds(0.02f);
             }
         }

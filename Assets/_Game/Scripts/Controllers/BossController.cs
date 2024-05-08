@@ -45,7 +45,6 @@ public class BossController : MonoBehaviour
     private void StopEveryThing()
     {
         _canFight = false;
-        ToggleAttack(false);
     }
 
     public void StartAttacking()
@@ -98,16 +97,6 @@ public class BossController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void AttackEndedEvent()
-    {
-        ResetAttack();
-    }
-
-    private void ResetAttack()
-    {
-        _isAttacking = false;
-    }
-
     public void Upgrade(int amount)
     {
         if (!_mesh.activeSelf) _mesh.SetActive(true);
@@ -119,10 +108,6 @@ public class BossController : MonoBehaviour
     public bool IsDead()
     {
         return _isDead;
-    }
-
-    private void ToggleAttack(bool state)
-    {
     }
 
     private void UpdateText()

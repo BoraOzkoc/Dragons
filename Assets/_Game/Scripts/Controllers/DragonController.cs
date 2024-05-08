@@ -145,10 +145,23 @@ public class DragonController : MonoBehaviour, ICollectable
         }
     }
 
+    public void MoveMiddle()
+    {
+        transform.DOLocalMoveX(0, 0.1f);
+    }
+
+    public void Move(float x_moveAmount)
+    {
+        transform.DOLocalMoveX(x_moveAmount, 0.3f).SetRelative(true);
+    }
+
+    public int GetLevel()
+    {
+        return _level;
+    }
     public void StartEndingProtocol(EndingFightController endingFightController)
     {
         StopGroundCheck();
-        StopAttack();
         Vector3 targetPos = endingFightController.GetAllyBossPos();
         targetPos.y = transform.position.y;
         transform.DOMove(targetPos, 1).SetEase(Ease.Linear).OnComplete(() =>
@@ -158,19 +171,19 @@ public class DragonController : MonoBehaviour, ICollectable
         });
     }
 
-    public void MoveLeft()
+    public void MoveLeft(int times)
     {
-        transform.DOLocalMoveX(-1, 0.1f).SetRelative(true);
+        transform.DOLocalMoveX(-1 * times, 0.1f).SetRelative(true);
     }
 
-    public void MoveRight()
+    public void MoveRight(int times)
     {
-        transform.DOLocalMoveX(1, 0.1f).SetRelative(true);
+        transform.DOLocalMoveX(1 * times, 0.1f).SetRelative(true);
     }
 
-    public void StopAttack()
+    public void Attack()
     {
-        _attackController.ToggleAttack(false);
+        _attackController.Attack();
     }
 
     private void StartFalling()
@@ -183,7 +196,6 @@ public class DragonController : MonoBehaviour, ICollectable
         rb.useGravity = true;
         GetDestroyed(1);
         LeaveGroup();
-        _attackController.ToggleAttack(false);
         transform.SetParent(null);
     }
 
@@ -354,6 +366,11 @@ public class DragonController : MonoBehaviour, ICollectable
         _mesh.material = materialList[_level];
     }
 
+    public float GetAnimationTime()
+    {
+        return _attackController.GetAnimTime();
+    }
+
     private void SetNumber(int amount)
     {
         _number = amount;
@@ -390,7 +407,6 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         if (_groupJoined) return;
         _groupJoined = true;
-        _attackController.ToggleAttack(_dragonManager.GetAttackState());
     }
 
     public AttackController GetAttackController()

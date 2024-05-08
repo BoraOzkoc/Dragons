@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class DragonManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class DragonManager : MonoBehaviour
     [SerializeField] private List<DragonController> _dragonList = new List<DragonController>();
     [SerializeField] private MovementController _movementController;
     private bool _attackState;
+    private Coroutine _attackCoroutine, _centerCoroutine;
 
     private void Start()
     {
@@ -22,30 +24,47 @@ public class DragonManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.GameStartedEvent += GameStartedEvent;
+        GameManager.LevelCompletedEvent += StopAttack;
+        GameManager.LevelFailedEvent += StopAttack;
     }
 
     private void OnDisable()
     {
         GameManager.GameStartedEvent -= GameStartedEvent;
+        GameManager.LevelCompletedEvent -= StopAttack;
+        GameManager.LevelFailedEvent -= StopAttack;
+    }
+
+    private void StopAttack()
+    {
+        _attackState = false;
+        StopCoroutine(_attackCoroutine);
     }
 
     private void GameStartedEvent()
     {
         _attackState = true;
-        for (int i = 0; i < _dragonList.Count; i++)
-        {
-            _dragonList[i].GetAttackController().ToggleAttack(_attackState);
-        }
+        _attackCoroutine = StartCoroutine(AttackCoroutine());
     }
 
-    public bool GetAttackState()
+    IEnumerator AttackCoroutine()
     {
-        return _attackState;
+        while (_attackState)
+        {
+            for (int i = 0; i < _dragonList.Count; i++)
+            {
+                _dragonList[i].Attack();
+            }
+
+            yield return new WaitForSeconds(1);
+        }
     }
 
     public void CheckLocations()
     {
+        if (_dragonList.Count == 0) return;
         int leftCount = 0, rightCount = 0;
+        if (_dragonList.Count == 1) _dragonList[0].MoveMiddle();
 
         for (int i = 0; i < _dragonList.Count; i++)
         {
@@ -71,10 +90,7 @@ public class DragonManager : MonoBehaviour
     {
         for (int i = 0; i < _dragonList.Count; i++)
         {
-            for (int j = 0; j < times; j++)
-            {
-                _dragonList[i].MoveRight();
-            }
+            _dragonList[i].MoveRight(times);
         }
     }
 
@@ -82,10 +98,7 @@ public class DragonManager : MonoBehaviour
     {
         for (int i = 0; i < _dragonList.Count; i++)
         {
-            for (int j = 0; j < times; j++)
-            {
-                _dragonList[i].MoveLeft();
-            }
+            _dragonList[i].MoveLeft(times);
         }
     }
 
@@ -111,7 +124,7 @@ public class DragonManager : MonoBehaviour
     IEnumerator EndingCoroutine(EndingFightController endingFightController)
     {
         _movementController.StopMovement();
-
+        StopAttack();
         TriggerDragons(endingFightController);
         yield return new WaitForSeconds(1);
     }
@@ -134,20 +147,38 @@ public class DragonManager : MonoBehaviour
         endingFightController.ActivateFight();
     }
 
-    public void MoveListToLeft()
+    private void CenterDragons()
+    {
+        IEnumerator MoveDelay()
+        {
+            yield return new WaitForSeconds(0.5f);
+            Vector3 center = CalculateCenter();
+
+            float moveAmount = -center.x;
+            MoveList(moveAmount);
+        }
+
+        if (_centerCoroutine != null) StopCoroutine(_centerCoroutine);
+        _centerCoroutine = StartCoroutine(MoveDelay());
+    }
+
+    private void MoveList(float x_amount)
     {
         for (int i = 0; i < _dragonList.Count; i++)
         {
-            _dragonList[i].transform.DOLocalMoveX(-0.5f, 0.1f).SetRelative(true);
+            _dragonList[i].Move(x_amount);
         }
     }
 
-    public void MoveListToRight()
+    private Vector3 CalculateCenter()
     {
+        Vector3 pos = Vector3.zero;
         for (int i = 0; i < _dragonList.Count; i++)
         {
-            _dragonList[i].transform.DOLocalMoveX(0.5f, 0.1f).SetRelative(true);
+            pos += _dragonList[i].transform.localPosition;
         }
+
+        return pos / _dragonList.Count;
     }
 
     private DragonController FindClosest(List<DragonController> tempList)
@@ -170,25 +201,12 @@ public class DragonManager : MonoBehaviour
         return minDistancedDragon;
     }
 
-    private void ExtractFromList()
-    {
-    }
-
-    public void RepositionList(List<DragonController> list)
-    {
-        List<DragonController> tempList = new List<DragonController>(_dragonList);
-        DragonController closestDragon = FindClosest(tempList);
-
-        //do something then remove
-        tempList.Remove(closestDragon);
-    }
-
     private void CheckListNumber()
     {
         if (_dragonList.Count <= 0 && _movementController.CanMove())
         {
-            Debug.Log("fail");
             _movementController.StopMovement();
+            GameManager.Instance.LevelFailed();
         }
     }
 
@@ -203,14 +221,21 @@ public class DragonManager : MonoBehaviour
         if (dragon_1.GetNumber() == dragon_2.GetNumber())
         {
             StartCoroutine(MergeProtocol(dragon_1, dragon_2, 0.5f));
+            CenterDragons();
             return true;
         }
         else
         {
             dragon_2.Init(this);
             dragon_2.JoinGroup();
+            CenterDragons();
             return false;
         }
+    }
+
+    public float GetFirstAnimTime()
+    {
+        return _dragonList[0].GetAnimationTime();
     }
 
     IEnumerator MergeProtocol(DragonController dragon_1, DragonController dragon_2, float delay)
@@ -228,15 +253,7 @@ public class DragonManager : MonoBehaviour
 
         if (!dragon_2.InGroup())
         {
-            // Vector3 destination = dragon_1.transform.position;
-            // Tweener moveTween = dragon_2.transform.DOMove(destination, delay - 0.2f);
-            // moveTween.OnUpdate(() =>
-            // {
-            //     moveTween.ChangeEndValue(dragon_1.transform.position,true);
-            // });
-            //
-            // yield return new WaitForSeconds(delay);
-
+            dragon_1.GetAttackController().SetAnimTime(GetFirstAnimTime());
             dragon_2.GetDestroyed();
             dragon_1.Reposition();
             dragon_1.GetMerged();
@@ -247,6 +264,8 @@ public class DragonManager : MonoBehaviour
 
             yield return new WaitForSeconds(delay);
 
+            dragon_1.GetAttackController().SetAnimTime(GetFirstAnimTime());
+
             dragon_2.GetDestroyed();
             dragon_1.Reposition();
             dragon_1.GetMerged();
@@ -256,6 +275,7 @@ public class DragonManager : MonoBehaviour
             dragon_1.transform.DOLocalMove(dragon_2.transform.localPosition, delay - 0.1f);
 
             yield return new WaitForSeconds(delay);
+            dragon_1.GetAttackController().SetAnimTime(GetFirstAnimTime());
 
             dragon_1.GetDestroyed();
             dragon_2.Reposition();

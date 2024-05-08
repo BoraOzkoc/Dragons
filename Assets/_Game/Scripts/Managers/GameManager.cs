@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
         return _levelStarted;
     }
 
-    public void GameFailed()
+    public void LevelFailed()
     {
         if (_LevelCompleted) return;
         _levelFailed = true;

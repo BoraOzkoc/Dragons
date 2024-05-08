@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -39,13 +40,17 @@ public class ObstacleController : MonoBehaviour
         {
             _obstacleNumber = 0;
             isDestroyed = true;
-            DestroyCage();
+            DestroyAnim();
             FreeDragon();
         }
 
         UpdateText();
     }
 
+    private void DestroyAnim()
+    {
+        _mesh.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBounce).OnComplete(DestroyCage);
+    }
     private void DestroyCage()
     {
         _mesh.SetActive(false);

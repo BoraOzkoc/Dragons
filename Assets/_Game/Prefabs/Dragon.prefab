@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186391130046836516}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.541}
+  m_LocalPosition: {x: 0, y: 0, z: -0.232}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11649,6 +11649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a8eb5990b8b97a4fb55135500d9335c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dragonController: {fileID: 4440521303445981966}
   _damage: 1
   _waitBetweenAttacks: 1
   _projectileSpeed: 10
