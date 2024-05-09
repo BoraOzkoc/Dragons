@@ -845,8 +845,10 @@ PlayerSettings:
     Nintendo Switch: DOTWEEN
     PS4: DOTWEEN
     PS5: DOTWEEN
+    QNX: 
     Stadia: DOTWEEN
     Standalone: DOTWEEN
+    VisionOS: 
     WebGL: DOTWEEN
     Windows Store Apps: DOTWEEN
     XboxOne: DOTWEEN

@@ -753,12 +753,12 @@
 		#if defined(MK_WORKFLOW_METALLIC)
 			pbsData.oneMinusReflectivity = K_SPEC_DIELECTRIC_MAX - pbsData.metallic * K_SPEC_DIELECTRIC_MAX;
 			pbsData.reflectivity = 1.0 - pbsData.oneMinusReflectivity;
-			pbsData.specularRadiance = lerp(K_SPEC_DIELECTRIC_MIN, surface.albedo, pbsData.metallic);
+			pbsData.specularRadiance = lerp(K_SPEC_DIELECTRIC_MIN.xxx, surface.albedo, pbsData.metallic);
 			pbsData.diffuseRadiance = surface.albedo * (pbsData.oneMinusReflectivity * (1.0 - pbsData.specularRadiance));//surface.albedo * pbsData.oneMinusReflectivity;
 		#elif defined(MK_WORKFLOW_ROUGHNESS)
 			pbsData.oneMinusReflectivity = K_SPEC_DIELECTRIC_MAX - pbsData.metallic * K_SPEC_DIELECTRIC_MAX;
 			pbsData.reflectivity = 1.0 - pbsData.oneMinusReflectivity;
-			pbsData.specularRadiance = lerp(K_SPEC_DIELECTRIC_MIN, surface.albedo, pbsData.metallic);
+			pbsData.specularRadiance = lerp(K_SPEC_DIELECTRIC_MIN.xxx, surface.albedo, pbsData.metallic);
 			pbsData.diffuseRadiance = surface.albedo * ((1.0 - pbsData.specularRadiance) * pbsData.oneMinusReflectivity);
 		#elif defined(MK_WORKFLOW_SPECULAR)
 			pbsData.reflectivity = max(max(pbsData.specular.r, pbsData.specular.g), pbsData.specular.b);

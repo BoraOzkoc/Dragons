@@ -49,6 +49,9 @@
 				outlineSize *= 0.5;
 			#endif
 		#endif
+		#ifdef UNITY_SINGLE_PASS_STEREO
+			outlineSize.x *= 0.5;
+		#endif
 
 		#ifdef MK_OUTLINE_FADING
 			float dist;

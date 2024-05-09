@@ -58,17 +58,21 @@
 
 	inline half ScaleToFitOrthographicUV(float clipScale)
 	{
-		half scaleFactor;
-		#if defined(MK_MULTI_PASS_STEREO_SCALING) || defined(UNITY_SINGLE_PASS_STEREO) || defined(UNITY_STEREO_INSTANCING_ENABLED) || defined(UNITY_STEREO_MULTIVIEW_ENABLED)
-			scaleFactor = 2.0;
+		//#if defined(MK_MULTI_PASS_STEREO_SCALING) || defined(UNITY_SINGLE_PASS_STEREO) || defined(UNITY_STEREO_INSTANCING_ENABLED) || defined(UNITY_STEREO_MULTIVIEW_ENABLED)
+		#if (defined(USING_STEREO_MATRICES) || defined(MK_MULTI_PASS_STEREO_SCALING))
+			const half scaleFactor = 2.0;
 		#else
-			scaleFactor = 1.0;
+			const half scaleFactor = 1.0;
 		#endif
 		half orhtographicUVScale = 1;
 		UNITY_BRANCH
 		if(unity_OrthoParams.w > 0)
 			orhtographicUVScale = 2.0 * clipScale * unity_OrthoParams.y;
-		return orhtographicUVScale * scaleFactor;
+		#ifdef UNITY_SINGLE_PASS_STEREO
+			return half2(0.5h, 1) * (orhtographicUVScale * scaleFactor);
+		#else
+			return orhtographicUVScale * scaleFactor;
+		#endif
 	}
 
 	inline float ComputeLinearDepthToEyeDepth(float eyeDepth)

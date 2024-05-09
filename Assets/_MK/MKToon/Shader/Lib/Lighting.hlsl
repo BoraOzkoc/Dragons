@@ -286,6 +286,16 @@
 		#define ARTISTIC_RAW_ADDITIVE(value)
 	#endif
 
+	#if defined(MK_ARTISTIC_DRAWN)
+		#define ARTISTIC_RAW_MASKED(value, compare) value = Drawn(value, surface.artistic0, _DrawnClampMax) * step(HALF_MIN, compare)
+	#elif defined(MK_ARTISTIC_HATCHING)
+		#define ARTISTIC_RAW_MASKED(value, compare) value = Hatching(surface.artistic0, surface.artistic1, value, 0) * step(HALF_MIN, compare)
+	#elif defined(MK_ARTISTIC_SKETCH)
+		#define ARTISTIC_RAW_MASKED(value, compare) value = Sketch(surface.artistic0, value) * step(HALF_MIN, compare)
+	#else
+		#define ARTISTIC_RAW_MASKED(value, compare)
+	#endif
+
 	#define TRANSFER_SCALAR_TO_VECTOR(value) value.rgb = value.a
 
 	//Isotropic Reflection
@@ -1053,7 +1063,7 @@
 		#ifdef MK_LIT
 			half diffuseRaw = MKLightingDiffuse(surface, surfaceData, pbsData, light, lightData);
 			half4 diffuse = half4(0, 0, 0, diffuseRaw);
-			ARTISTIC_RAW_ADDITIVE(diffuse.a);
+			ARTISTIC_RAW_MASKED(diffuse.a, light.distanceAttenuation);
 			//diffuse.a *= diffuseRaw;
 			TRANSFER_SCALAR_TO_VECTOR(diffuse);
 			
