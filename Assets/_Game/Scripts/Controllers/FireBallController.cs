@@ -10,7 +10,7 @@ public class FireBallController : MonoBehaviour
     [SerializeField] private MeshRenderer _mesh;
     [SerializeField] private float _lifeTime, _speed;
     [SerializeField] private int _damage;
-    [SerializeField] private ParticleSystem _fireEffect;
+    [SerializeField] private ParticleSystem _fireEffect,_obstacleHitEffect,_towerHitEffect;
     private PoolingManager _poolingManager;
     private BossController _owner;
     private int _fireLevel;
@@ -66,6 +66,19 @@ public class FireBallController : MonoBehaviour
         transform.LookAt(transform.position + direction);
     }
 
+    public void PlayObstacleHitEffect()
+    {
+        IEnumerator ReturnCoroutine()
+        {
+        _obstacleHitEffect.Play();
+        _obstacleHitEffect.transform.SetParent(transform.parent);
+        yield return  new WaitForSeconds(0.5f);
+        _obstacleHitEffect.transform.SetParent(transform);
+        _obstacleHitEffect.transform.localPosition = Vector3.zero;
+        }
+
+        StartCoroutine(ReturnCoroutine());
+    }
     private void StartLifeTimer()
     {
         StartCoroutine(LifeTimeCoroutine());
@@ -74,11 +87,14 @@ public class FireBallController : MonoBehaviour
     IEnumerator LifeTimeCoroutine()
     {
         yield return new WaitForSeconds(_lifeTime);
+        _fireEffect.Stop();
+
         _poolingManager.PushToPool(this);
     }
 
     private void Deactivate()
     {
+        _fireEffect.Stop();
         _poolingManager.PushToPool(this);
         ResetColor();
     }
@@ -118,6 +134,8 @@ public class FireBallController : MonoBehaviour
     private void TeleportObject(Vector3 pos)
     {
         transform.position = pos;
+        _fireEffect.Play();
+
     }
 
     private void ToggleObject(bool state)

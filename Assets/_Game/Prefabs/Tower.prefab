@@ -654,6 +654,7 @@ MonoBehaviour:
   _healthText: {fileID: 5940658100710299841}
   _princessController: {fileID: 5901787020741425066}
   _towerTip: {fileID: 7463201752743603275}
+  _confettiEffect: {fileID: 8674986437935001115}
   _storedDamage: 0
   _totalFloorCount: 0
 --- !u!1 &2400764517491250066
@@ -2098,6 +2099,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: dr_princess_rigged
       objectReference: {fileID: 0}
+    - target: {fileID: 1510615246953298230, guid: d13314c3e7f7781439dc2876cf2dedd8, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1972552990956526080, guid: d13314c3e7f7781439dc2876cf2dedd8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2138,6 +2143,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7358380169291797810, guid: d13314c3e7f7781439dc2876cf2dedd8, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2154,6 +2163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54d99d383a507d84eb8733cfa2d42e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!198 &8674986437935001115 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2151707300273896345, guid: d13314c3e7f7781439dc2876cf2dedd8, type: 3}
+  m_PrefabInstance: {fileID: 7331816589324637570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9142362395834568578 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1972552990956526080, guid: d13314c3e7f7781439dc2876cf2dedd8, type: 3}

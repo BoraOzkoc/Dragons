@@ -18,7 +18,9 @@ public class DragonController : MonoBehaviour, ICollectable
     [SerializeField] private bool _groupJoined;
     [SerializeField] private TextMeshPro _numberText;
     [SerializeField] private LayerMask _groundLayer;
-    [SerializeField] private AttackController _attackController;
+    [SerializeField] private AttackController _attackController; 
+    [SerializeField] private List<ParticleSystem> particleList = new List<ParticleSystem>();
+
     [SerializeField, ReadOnly] private DragonController _leftNode, _rightNode;
 
     private DragonManager _dragonManager;
@@ -40,6 +42,13 @@ public class DragonController : MonoBehaviour, ICollectable
         UpdateText();
     }
 
+    private void ChangeParticleColor(Color color)
+    {
+        for (int i = 0; i < particleList.Count; i++)
+        {
+            particleList[i].startColor = color;
+        }
+    }
     private void Update()
     {
         if (_canGroundCheck) CheckGround();
@@ -357,6 +366,7 @@ public class DragonController : MonoBehaviour, ICollectable
         ToggleBlock(false);
         CheckNeighbourNodes();
         SetMeshMaterial();
+        
     }
 
     private void SetMeshMaterial()
@@ -364,6 +374,8 @@ public class DragonController : MonoBehaviour, ICollectable
         _level += 1;
         if (_level == materialList.Count - 1) _level = materialList.Count - 1;
         _mesh.material = materialList[_level];
+        ChangeParticleColor(_mesh.material.color);
+        particleList[0].Play();
     }
 
     public float GetAnimationTime()

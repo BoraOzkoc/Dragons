@@ -13,6 +13,7 @@ public class TowerController : MonoBehaviour
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField] private PrincessController _princessController;
     [SerializeField] private Transform _towerTip;
+    [SerializeField] private ParticleSystem _confettiEffect;
     [SerializeField, ReadOnly] private int _storedDamage, _totalFloorCount;
     private string _towerHealthSaveName = "TowerHealth", _storedDamageSaveName = "StoredDamage";
     private bool _isDestroyed;
@@ -97,6 +98,7 @@ public class TowerController : MonoBehaviour
             _currentHealth = 0;
             _princessController.PlayCheerAnim();
             UpdateText();
+            _confettiEffect.Play();
             GameManager.Instance.LevelCompleted();
         }
     }
