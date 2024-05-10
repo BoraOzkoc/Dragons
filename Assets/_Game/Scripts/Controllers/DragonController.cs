@@ -205,15 +205,17 @@ public class DragonController : MonoBehaviour, ICollectable
         Vector3 targetPos = Vector3.right * 10;
         if (transform.position.x < 0) targetPos *= -1;
         targetPos.y = -2;
-        transform.DOMove(targetPos, 1).SetRelative(true);
+        transform.DOMove(targetPos, 1).SetRelative(true).OnComplete(() =>
+        {
+            GetDestroyed();
+        });
         transform.DOLookAt(targetPos, 0.2f);
-        StartCoroutine(DelayDestroy());
+        
     }
 
     IEnumerator DelayDestroy()
     {
         yield return new WaitForSeconds(2);
-        GetDestroyed();
 
     }
 
