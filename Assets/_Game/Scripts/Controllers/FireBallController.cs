@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FireBallController : MonoBehaviour
@@ -52,6 +53,7 @@ public class FireBallController : MonoBehaviour
         transform.DOMove(position, 0.3f).SetEase(Ease.Linear).OnComplete(() =>
         {
             towerController.GetHit();
+            PlayTowerHitEffect();
             _poolingManager.PushToPool(this);
         });
     }
@@ -75,6 +77,19 @@ public class FireBallController : MonoBehaviour
         yield return  new WaitForSeconds(0.5f);
         _obstacleHitEffect.transform.SetParent(transform);
         _obstacleHitEffect.transform.localPosition = Vector3.zero;
+        }
+
+        StartCoroutine(ReturnCoroutine());
+    }
+    public void PlayTowerHitEffect()
+    {
+        IEnumerator ReturnCoroutine()
+        {
+            _towerHitEffect.Play();
+            _towerHitEffect.transform.SetParent(transform.parent);
+            yield return  new WaitForSeconds(0.5f);
+            _towerHitEffect.transform.SetParent(transform);
+            _towerHitEffect.transform.localPosition = Vector3.zero;
         }
 
         StartCoroutine(ReturnCoroutine());
@@ -119,8 +134,9 @@ public class FireBallController : MonoBehaviour
     {
         if (other.TryGetComponent(out ObstacleController obstacleController))
         {
+            if (obstacleController.IsDestroyed()) return;
             obstacleController.DecreaseNumber(_damage);
-
+            PlayObstacleHitEffect();
             Deactivate();
         }
 
