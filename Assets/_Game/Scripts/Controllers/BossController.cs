@@ -16,6 +16,7 @@ public class BossController : MonoBehaviour
     [SerializeField] private Transform _firePoint;
     [SerializeField] private bool _isDead;
     [SerializeField] private Animator _animator;
+    [SerializeField] private ParticleSystem _upgradingEffect;
     private bool _canFight, _isAttacking;
     private PoolingManager _poolingManager;
     private string _fireTrigger = "Base Layer.SFly Attack FireBall";
@@ -99,6 +100,7 @@ public class BossController : MonoBehaviour
 
     public void Upgrade(int amount)
     {
+        _upgradingEffect.Play();
         if (!_mesh.activeSelf) _mesh.SetActive(true);
         _health += amount;
         UpdateText();

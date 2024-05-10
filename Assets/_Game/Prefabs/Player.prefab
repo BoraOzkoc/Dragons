@@ -99,7 +99,7 @@ MonoBehaviour:
   _moveSpeed: 2
   _horizontalSpeed: 2
   _canMove: 0
-  _clamp_x: 3
+  _clamp_x: 7
 --- !u!114 &6830960382232382104
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -198,14 +198,23 @@ public class DragonController : MonoBehaviour, ICollectable
     private void StartFalling()
     {
         _groupJoined = false;
-        Rigidbody rb = GetComponent<Rigidbody>();
         Collider collider = GetComponent<Collider>();
         Destroy(collider);
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        GetDestroyed(1);
         LeaveGroup();
         transform.SetParent(null);
+        Vector3 targetPos = Vector3.right * 10;
+        if (transform.position.x < 0) targetPos *= -1;
+        targetPos.y = -2;
+        transform.DOMove(targetPos, 1).SetRelative(true);
+        transform.DOLookAt(targetPos, 0.2f);
+        StartCoroutine(DelayDestroy());
+    }
+
+    IEnumerator DelayDestroy()
+    {
+        yield return new WaitForSeconds(2);
+        GetDestroyed();
+
     }
 
     public bool IsCaged()
@@ -312,12 +321,12 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void GetDestroyed(float seconds = 0)
     {
-        transform.DOKill();
         if (_groupJoined)
         {
             EmptyNodes();
             _dragonManager.RemoveFromList(this);
         }
+        transform.DOKill();
 
         Destroy(gameObject, seconds);
     }
