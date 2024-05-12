@@ -113,6 +113,7 @@ public class DragonManager : MonoBehaviour
     {
         if (!_dragonList.Contains(dragonController)) return;
         _dragonList.Remove(dragonController);
+        //CenterDragons();
         CheckListNumber();
     }
 
