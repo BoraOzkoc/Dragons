@@ -34,8 +34,8 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            delta_x = Input.mousePosition.x - lastClickPos.x;
-            delta_y = Input.mousePosition.y - lastClickPos.y;
+            delta_x = (Input.mousePosition.x - lastClickPos.x) / Screen.width;
+            delta_y = (Input.mousePosition.y - lastClickPos.y) /Screen.width;
 
             SetLastClickPos();
         }

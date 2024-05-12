@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
 using TMPro;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 
 public class DragonController : MonoBehaviour, ICollectable
 {
