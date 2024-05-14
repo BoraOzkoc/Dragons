@@ -5143,6 +5143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _groundController: {fileID: 0}
   _endingFightController: {fileID: 2345893728498550465}
+  _towerController: {fileID: 1431335728913657747}
 --- !u!114 &2345893728498550465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14865,18 +14866,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2187469971094105922}
     m_Modifications:
-    - target: {fileID: 600877832852306716, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 600877832852306716, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 600877832852306716, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1103378048866741804, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -14921,14 +14910,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AllyBoss
       objectReference: {fileID: 0}
-    - target: {fileID: 3655837322027900065, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
-      propertyPath: m_text
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4386426925775194204, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 6146962315888907360, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
+      propertyPath: _ground
+      value: 
+      objectReference: {fileID: 1025329203054163304}
     - target: {fileID: 6146962315888907360, guid: fc4a8bcada002114cb29ef811631df3c, type: 3}
       propertyPath: _target
       value: 
@@ -15028,6 +15013,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tower
       objectReference: {fileID: 0}
+    - target: {fileID: 2489339910818909153, guid: 5a9b2c0632a383841987f4a431f93ab3, type: 3}
+      propertyPath: _bossController
+      value: 
+      objectReference: {fileID: 6302508282137417778}
     - target: {fileID: 3815107970297249033, guid: 5a9b2c0632a383841987f4a431f93ab3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

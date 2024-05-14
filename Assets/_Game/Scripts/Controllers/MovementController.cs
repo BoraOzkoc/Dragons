@@ -14,7 +14,6 @@ public class MovementController : MonoBehaviour
     {
         _inputManager = InputManager.Instance;
     }
-
     private void OnEnable()
     {
         GameManager.GameStartedEvent += GameStartedEvent;
@@ -41,6 +40,19 @@ public class MovementController : MonoBehaviour
 
         transform.Translate(x_value, 0, 0);
         ClampSideMovement();
+        
+        
+        if (Application.isEditor)
+        {
+            // Get input for horizontal movement
+            float horizontalInput = Input.GetAxis("Horizontal");
+
+            // Calculate horizontal movement
+            float horizontalMovement = horizontalInput * _horizontalSpeed/50 * Time.deltaTime;
+
+            // Move the character horizontally
+            transform.Translate(horizontalMovement, 0, 0);
+        }
     }
 
     private void StartMovement()

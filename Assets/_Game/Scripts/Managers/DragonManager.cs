@@ -216,7 +216,6 @@ public class DragonManager : MonoBehaviour
         if (dragon_left) dragon_left.SetRightNode(dragon_right);
         if (dragon_right) dragon_right.SetLeftNode(dragon_left);
     }
-
     public bool CheckIsSame(DragonController dragon_1, DragonController dragon_2)
     {
         if (dragon_1.GetNumber() == dragon_2.GetNumber())
@@ -261,7 +260,7 @@ public class DragonManager : MonoBehaviour
         }
         else if (dragon_1_distance < dragon_2_distance)
         {
-            dragon_2.transform.DOLocalMove(dragon_1.transform.localPosition, delay - 0.1f);
+            dragon_2.transform.DOLocalMove(dragon_1.transform.localPosition, delay - 0.1f).SetEase(Ease.Linear);
 
             yield return new WaitForSeconds(delay);
 
@@ -273,7 +272,7 @@ public class DragonManager : MonoBehaviour
         }
         else if (dragon_1_distance >= dragon_2_distance)
         {
-            dragon_1.transform.DOLocalMove(dragon_2.transform.localPosition, delay - 0.1f);
+            dragon_1.transform.DOLocalMove(dragon_2.transform.localPosition, delay - 0.1f).SetEase(Ease.Linear);
 
             yield return new WaitForSeconds(delay);
             dragon_1.GetAttackController().SetAnimTime(GetFirstAnimTime());

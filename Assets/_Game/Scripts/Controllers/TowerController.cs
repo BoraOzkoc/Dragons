@@ -12,8 +12,9 @@ public class TowerController : MonoBehaviour
     [SerializeField] private int _maxHealth, _currentHealth;
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField] private PrincessController _princessController;
-    [SerializeField] private Transform _towerTip;
-    [SerializeField] private ParticleSystem _confettiEffect;
+    [SerializeField] private BossController _bossController;
+    [SerializeField] private Transform _towerTip,_towerMesh,_targetMesh;
+    [SerializeField] private ParticleSystem _confettiEffect, _towerDisappearEffect;
     [SerializeField, ReadOnly] private int _storedDamage, _totalFloorCount;
     private string _towerHealthSaveName = "TowerHealth", _storedDamageSaveName = "StoredDamage";
     private bool _isDestroyed;
@@ -22,6 +23,7 @@ public class TowerController : MonoBehaviour
     {
         SetTotalFloorCount();
         Load();
+        ToggleText(false);
     }
 
     private void SetTotalFloorCount()
@@ -29,12 +31,21 @@ public class TowerController : MonoBehaviour
         _totalFloorCount = meshList.Count;
     }
 
+    public void TriggerEndingProtocol()
+    {
+        ToggleText(true);
+        
+    }
     private void Save()
     {
         PlayerPrefs.SetInt(_towerHealthSaveName, _currentHealth);
         PlayerPrefs.SetInt(_storedDamageSaveName, _storedDamage);
     }
 
+    private void SetTarget(Transform target)
+    {
+        _targetMesh = target;
+    }
     private void Load()
     {
         int health = PlayerPrefs.GetInt(_towerHealthSaveName, _maxHealth);
@@ -51,6 +62,7 @@ public class TowerController : MonoBehaviour
         SetCurrentHealth(health);
         UpdateText();
         if (health != _maxHealth) LowerTower(Mathf.Abs(health - _maxHealth) / (_maxHealth / _totalFloorCount));
+        //else SetTarget(meshList[0].transform);
     }
 
     private void ResetTower()
@@ -73,12 +85,15 @@ public class TowerController : MonoBehaviour
     [Button]
     public void GetHit()
     {
-        _currentHealth -= 2;
-        _storedDamage += 2;
-        CheckStoredDamage();
-        UpdateText();
-        CheckHealth();
-        Save();
+        if(_currentHealth>0)
+        {
+            _currentHealth -= 2;
+            _storedDamage += 2;
+            CheckStoredDamage();
+            UpdateText();
+            CheckHealth();
+            Save();
+        }
     }
 
     private void CheckStoredDamage()
@@ -99,10 +114,17 @@ public class TowerController : MonoBehaviour
             _princessController.PlayCheerAnim();
             UpdateText();
             _confettiEffect.Play();
+            _towerDisappearEffect.Play();
+            _bossController.TriggerHappyAnim();
+            ToggleMesh(false);
             GameManager.Instance.LevelCompleted();
         }
     }
 
+    private void ToggleMesh(bool state)
+    {
+        _towerMesh.gameObject.SetActive(state);
+    }
     private void LowerTower(int times = 1)
     {
         IEnumerator MoveCoroutine()
@@ -113,7 +135,7 @@ public class TowerController : MonoBehaviour
                 {
                     _princessController.MoveTo(_towerTip.position);
                 });
-                yield return new WaitForSeconds(0.02f);
+                yield return new WaitForSeconds(0.01f);
             }
         }
 
@@ -130,6 +152,10 @@ public class TowerController : MonoBehaviour
         _healthText.text = _currentHealth.ToString();
     }
 
+    private void ToggleText(bool state)
+    {
+        _healthText.gameObject.SetActive(state);
+    }
     private float GetMeshLength_y()
     {
         float yLength = meshList[0].GetComponent<MeshFilter>().sharedMesh.bounds.size.y;

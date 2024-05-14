@@ -27,6 +27,7 @@ public class InputManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (Input.touchCount > 1) return;
         if (Input.GetMouseButtonDown(0))
         {
             SetLastClickPos();

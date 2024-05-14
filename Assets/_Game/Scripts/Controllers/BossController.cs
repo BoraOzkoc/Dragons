@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -13,13 +14,13 @@ public class BossController : MonoBehaviour
     [SerializeField] private float _moveSpeed, range;
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField] private GameObject _mesh;
-    [SerializeField] private Transform _firePoint;
+    [SerializeField] private Transform _firePoint,_ground;
     [SerializeField] private bool _isDead;
     [SerializeField] private Animator _animator;
     [SerializeField] private ParticleSystem _upgradingEffect;
     private bool _canFight, _isAttacking;
     private PoolingManager _poolingManager;
-    private string _fireTrigger = "Base Layer.SFly Attack FireBall";
+    private string _fireTrigger = "Base Layer.SFly Attack FireBall", _sadTrigger = "Base Layer.Sad",_IdleTrigger  = "Base Layer.Idle";
 
     public enum Type
     {
@@ -46,6 +47,16 @@ public class BossController : MonoBehaviour
     private void StopEveryThing()
     {
         _canFight = false;
+        ToggleHealthText(false);
+    }
+
+    private void ToggleHealthText(bool state)
+    {
+        _healthText.gameObject.SetActive(state);
+    }
+    public void TriggerHappyAnim()
+    {
+        _animator.Play(_fireTrigger, 0, 0f);
     }
 
     public void StartAttacking()
@@ -88,20 +99,28 @@ public class BossController : MonoBehaviour
         {
             _health = 0;
             GameManager.Instance.LevelCompleted();
-            GetDestroyed();
+            transform.DOMove(_ground.position, 0.5f).OnComplete(() =>
+            {
+                TriggerSadAnim();
+            });
         }
     }
 
-    private void GetDestroyed()
+    private void TriggerSadAnim()
     {
-        Debug.Log("Play destroy Effect");
-        Destroy(gameObject);
+        _animator.Play(_sadTrigger, 0, 0f);        
     }
 
     public void Upgrade(int amount)
     {
         _upgradingEffect.Play();
-        if (!_mesh.activeSelf) _mesh.SetActive(true);
+        if (!_mesh.activeSelf)
+        {
+            _mesh.SetActive(true);
+            Vector3 startScale = transform.localScale;
+            transform.localScale = Vector3.zero;
+            transform.DOScale(startScale, 0.25f).SetEase(Ease.OutBounce);
+        }
         _health += amount;
         UpdateText();
         _mesh.transform.localScale += Vector3.one * amount / 30;

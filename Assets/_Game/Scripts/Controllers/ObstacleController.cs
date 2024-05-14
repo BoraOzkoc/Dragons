@@ -4,20 +4,27 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObstacleController : MonoBehaviour
 {
+    public Type ObstacleType;
     [SerializeField] private DragonController _dragonController;
     [SerializeField] private TextMeshPro _numberText;
     [SerializeField] private GameObject _mesh;
     [SerializeField] private int _obstacleNumber;
     [SerializeField] private bool isDestroyed;
 
+    public enum Type
+    {
+        Cage,
+        Egg
+    }
     private void Start()
     {
         _dragonController.GetCaged();
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
         if (isDestroyed) return;
@@ -25,7 +32,7 @@ public class ObstacleController : MonoBehaviour
         {
             if (!dragonController.IsCaged())
             {
-                dragonController.GetDestroyed();
+                dragonController.GetDestroyed(0.1f);
             }
         }
     }
@@ -55,12 +62,18 @@ public class ObstacleController : MonoBehaviour
         _mesh.SetActive(false);
     }
 
+    private void RandomizeDragon()
+    {
+        Debug.Log("randomized");
+        _dragonController.Randomize();
+    }
     public bool IsDestroyed()
     {
         return isDestroyed;
     }
     private void FreeDragon()
     {
+        if(ObstacleType == Type.Egg) RandomizeDragon();
         _dragonController.GetFreed();
         _dragonController = null;
     }
@@ -70,7 +83,7 @@ public class ObstacleController : MonoBehaviour
         _numberText.text = _obstacleNumber.ToString();
         _numberText.gameObject.SetActive(_obstacleNumber > 0);
     }
-
+    
     private void OnValidate()
     {
         UpdateText();

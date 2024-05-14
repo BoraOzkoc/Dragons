@@ -9,6 +9,7 @@ public class EndingController : MonoBehaviour
     public static EndingController Instance;
     [SerializeField] private GroundController _groundController;
     [SerializeField] private EndingFightController _endingFightController;
+    [SerializeField] private TowerController _towerController;
     private LevelController _levelController;
 
     private void Awake()
@@ -26,6 +27,8 @@ public class EndingController : MonoBehaviour
         if (other.TryGetComponent(out DragonManager dragonManager))
         {
             dragonManager.StartEndingProtocol(_endingFightController);
+            _towerController.TriggerEndingProtocol();
+            
             CameraManager.Instance.ActivateEndCamera();
         }
     }

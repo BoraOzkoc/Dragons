@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using NaughtyAttributes;
 using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DragonController : MonoBehaviour, ICollectable
 {
@@ -39,6 +41,13 @@ public class DragonController : MonoBehaviour, ICollectable
         UpdateText();
     }
 
+    public void Randomize()
+    {
+        int powerNumber =(Random.Range(1, 8));
+        int randomNumber = (int)math.pow(2 ,powerNumber);
+        SetLevel(powerNumber);
+        SetNumber(randomNumber);
+    }
     private void ChangeParticleColor(Color color)
     {
         for (int i = 0; i < particleList.Count; i++)
@@ -118,7 +127,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
         Vector3 targetPos = _leftNode.transform.localPosition;
         targetPos.x += 1;
-        transform.DOLocalMove(targetPos, 0.1f);
+        transform.DOLocalMove(targetPos, 0.1f).SetEase(Ease.Linear);
         if (_rightNode) _rightNode.MoveNextToLeftNode();
     }
 
@@ -127,7 +136,7 @@ public class DragonController : MonoBehaviour, ICollectable
         if (!_rightNode) return;
         Vector3 targetPos = _rightNode.transform.localPosition;
         targetPos.x -= 1;
-        transform.DOLocalMove(targetPos, 0.1f);
+        transform.DOLocalMove(targetPos, 0.1f).SetEase(Ease.Linear);
         if (_leftNode) _leftNode.MoveNextToRightNode();
     }
 
@@ -170,6 +179,7 @@ public class DragonController : MonoBehaviour, ICollectable
         StopGroundCheck();
         Vector3 targetPos = endingFightController.GetAllyBossPos();
         targetPos.y = transform.position.y;
+        transform.DOLookAt(targetPos, 0.2f);
         transform.DOMove(targetPos, 1).SetEase(Ease.Linear).OnComplete(() =>
         {
             endingFightController.UpgradeAllyBoss(GetNumber());
@@ -320,14 +330,16 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void GetDestroyed(float seconds = 0)
     {
+        transform.DOScale(Vector3.zero, seconds).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            transform.DOKill();
+            Destroy(gameObject);
+        });
         if (_groupJoined)
         {
             EmptyNodes();
             _dragonManager.RemoveFromList(this);
         }
-        transform.DOKill();
-
-        Destroy(gameObject, seconds);
     }
 
     public DragonController GetRightNode()
@@ -377,12 +389,26 @@ public class DragonController : MonoBehaviour, ICollectable
         
     }
 
-    private void SetMeshMaterial()
+    private void SetLevel(int number)
+    {
+        _level = number-1;
+        SetMesh();
+    }
+
+    private void IncreaseLevel()
     {
         _level += 1;
-        if (_level == materialList.Count - 1) _level = materialList.Count - 1;
+    }
+    private void SetMesh()
+    {
+        if (_level >= materialList.Count - 1) _level = materialList.Count - 1;
         _mesh.material = materialList[_level];
         ChangeParticleColor(_mesh.material.color);
+    }
+    private void SetMeshMaterial()
+    {
+        IncreaseLevel();
+        SetMesh();
         particleList[0].Play();
     }
 
