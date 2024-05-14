@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Lofelt.NiceVibrations;
 using NaughtyAttributes;
 using TMPro;
 using Unity.Mathematics;
@@ -204,6 +205,8 @@ public class DragonController : MonoBehaviour, ICollectable
 
     private void StartFalling()
     {
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.HeavyImpact);
+
         _groupJoined = false;
         Collider collider = GetComponent<Collider>();
         Destroy(collider);
@@ -382,6 +385,8 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void GetMerged()
     {
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.MediumImpact);
+
         SetNumber(_number * 2);
         ToggleBlock(false);
         CheckNeighbourNodes();

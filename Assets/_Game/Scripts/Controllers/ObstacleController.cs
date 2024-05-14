@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Lofelt.NiceVibrations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,11 +21,12 @@ public class ObstacleController : MonoBehaviour
         Cage,
         Egg
     }
+
     private void Start()
     {
         _dragonController.GetCaged();
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
         if (isDestroyed) return;
@@ -33,6 +35,7 @@ public class ObstacleController : MonoBehaviour
             if (!dragonController.IsCaged())
             {
                 dragonController.GetDestroyed(0.1f);
+                HapticPatterns.PlayPreset(HapticPatterns.PresetType.HeavyImpact);
             }
         }
     }
@@ -57,6 +60,7 @@ public class ObstacleController : MonoBehaviour
     {
         _mesh.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.InBounce).OnComplete(DestroyCage);
     }
+
     private void DestroyCage()
     {
         _mesh.SetActive(false);
@@ -66,14 +70,17 @@ public class ObstacleController : MonoBehaviour
     {
         _dragonController.Randomize();
     }
+
     public bool IsDestroyed()
     {
         return isDestroyed;
     }
+
     private void FreeDragon()
     {
-        if(ObstacleType == Type.Egg) RandomizeDragon();
+        if (ObstacleType == Type.Egg) RandomizeDragon();
         _dragonController.GetFreed();
+        _dragonController.transform.DOScale(Vector3.one, 0.3f);
         _dragonController = null;
     }
 
@@ -82,7 +89,7 @@ public class ObstacleController : MonoBehaviour
         _numberText.text = _obstacleNumber.ToString();
         _numberText.gameObject.SetActive(_obstacleNumber > 0);
     }
-    
+
     private void OnValidate()
     {
         UpdateText();

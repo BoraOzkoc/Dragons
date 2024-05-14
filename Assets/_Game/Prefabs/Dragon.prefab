@@ -26118,12 +26118,12 @@ MonoBehaviour:
   _number: 2
   _mesh: {fileID: 3436197750896623520}
   materialList:
-  - {fileID: 2100000, guid: 4edb186dbe20a6441a88b296fce47d77, type: 2}
-  - {fileID: 2100000, guid: 828c3de08b836bc49ad16e6420a1fb19, type: 2}
-  - {fileID: 2100000, guid: 3d08c1ed0c77fb54fa345b7864c89918, type: 2}
-  - {fileID: 2100000, guid: a916bd8c98db70e48ae3157628756c3c, type: 2}
-  - {fileID: 2100000, guid: 12cb694027da54749a1b4412662d12d4, type: 2}
-  - {fileID: 2100000, guid: 95f1f2f1c6360a0448a45ceb2f8172e1, type: 2}
+  - {fileID: 2100000, guid: 267d53a03c588bc4e918217030a40fef, type: 2}
+  - {fileID: 2100000, guid: 4fb3cf5eebd9ad64492f82c8005d3ede, type: 2}
+  - {fileID: 2100000, guid: c89aaa0198965334583ee1b558912646, type: 2}
+  - {fileID: 2100000, guid: 615c2c504e4943244afa490c4993bcbb, type: 2}
+  - {fileID: 2100000, guid: 165399db30284b549b33718c5b498743, type: 2}
+  - {fileID: 2100000, guid: 5959e6e7442f4554a9c6df02fa35c434, type: 2}
   _isCaged: 0
   _groupJoined: 0
   _numberText: {fileID: 2016895046985830837}

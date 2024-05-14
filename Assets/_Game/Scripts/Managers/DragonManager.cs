@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Lofelt.NiceVibrations;
 using NaughtyAttributes;
 using UnityEngine;
 
@@ -216,6 +217,7 @@ public class DragonManager : MonoBehaviour
         if (dragon_left) dragon_left.SetRightNode(dragon_right);
         if (dragon_right) dragon_right.SetLeftNode(dragon_left);
     }
+
     public bool CheckIsSame(DragonController dragon_1, DragonController dragon_2)
     {
         if (dragon_1.GetNumber() == dragon_2.GetNumber())

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Lofelt.NiceVibrations;
 using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
@@ -71,6 +72,7 @@ public class BossController : MonoBehaviour
 
     public void Fire()
     {
+        HapticPatterns.PlayPreset(HapticPatterns.PresetType.MediumImpact);
         TakeDamage();
         FireBallController fireBallController = _poolingManager.PullFromPool();
         fireBallController.ActivateFakeFireBall(_firePoint.position, _target);
