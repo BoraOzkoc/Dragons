@@ -89,6 +89,7 @@ public class BossController : MonoBehaviour
     private void TakeDamage()
     {
         _health -= 2;
+        DecreaseScale();
         CheckHealth();
         UpdateText();
     }
@@ -124,6 +125,12 @@ public class BossController : MonoBehaviour
         _health += amount;
         UpdateText();
         _mesh.transform.localScale += Vector3.one * amount / 30;
+    }
+
+    private void DecreaseScale()
+    {
+        _mesh.transform.localScale -= Vector3.one * 2 / 30;
+
     }
 
     public bool IsDead()

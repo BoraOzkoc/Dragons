@@ -7,9 +7,19 @@ using UnityEngine.UI;
 
 public class TutorialController : MonoBehaviour
 {
+    public static TutorialController Instance;
     [SerializeField] private Transform _start, _end;
     [SerializeField] private Image _handImage;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(Instance.gameObject);
+            Instance = this;
+        }
+        else Instance = this;
+    }
     private void Start()
     {
         StartAnim();
@@ -18,13 +28,11 @@ public class TutorialController : MonoBehaviour
     private void OnEnable()
     {
         GameManager.GameStartedEvent += StopAnim;
-        GameManager.GameStartedEvent += StartTapAnim;
     }
 
     private void OnDisable()
     {
         GameManager.GameStartedEvent -= StopAnim;
-        GameManager.GameStartedEvent -= StartTapAnim;
     }
 
     private void StopAnim()
@@ -33,13 +41,17 @@ public class TutorialController : MonoBehaviour
         _handImage.transform.DOKill();
     }
 
-    private void StartTapAnim()
+    public void StartTapAnim()
     {
-        //_handImage.DOFade(1, 0.25f).SetDelay(0.25f);
-        //MoveBetween();
+        _handImage.DOFade(1, 0.25f).SetDelay(0.25f);
+        MoveBetween();
 
     }
 
+    public void StopTapAnim()
+    {
+        StopAnim();
+    }
     private void MoveToEnd()
     {
         _handImage.transform.DOMove(_end.position, 1).OnComplete(MoveToStart).SetEase(Ease.InQuad);

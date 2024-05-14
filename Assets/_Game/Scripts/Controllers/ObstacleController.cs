@@ -64,7 +64,6 @@ public class ObstacleController : MonoBehaviour
 
     private void RandomizeDragon()
     {
-        Debug.Log("randomized");
         _dragonController.Randomize();
     }
     public bool IsDestroyed()

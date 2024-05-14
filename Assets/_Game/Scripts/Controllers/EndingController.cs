@@ -28,7 +28,7 @@ public class EndingController : MonoBehaviour
         {
             dragonManager.StartEndingProtocol(_endingFightController);
             _towerController.TriggerEndingProtocol();
-            
+            TutorialController.Instance.StartTapAnim();
             CameraManager.Instance.ActivateEndCamera();
         }
     }
