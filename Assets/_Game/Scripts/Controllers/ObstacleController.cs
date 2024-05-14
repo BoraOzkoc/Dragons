@@ -42,6 +42,8 @@ public class ObstacleController : MonoBehaviour
 
     public void DecreaseNumber(int amount)
     {
+        if (ObstacleType == Type.Cage) AudioManager.Instance.PlayMetalHit();
+        else if (ObstacleType == Type.Egg) AudioManager.Instance.PlayEggHit();
         transform.DOShakeScale(0.15f, 1, 5);
         if (isDestroyed) return;
         _obstacleNumber -= amount;

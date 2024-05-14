@@ -13,7 +13,7 @@ public class TowerController : MonoBehaviour
     [SerializeField] private TextMeshPro _healthText;
     [SerializeField] private PrincessController _princessController;
     [SerializeField] private BossController _bossController;
-    [SerializeField] private Transform _towerTip,_towerMesh,_targetMesh;
+    [SerializeField] private Transform _towerTip, _towerMesh, _targetMesh;
     [SerializeField] private ParticleSystem _confettiEffect, _towerDisappearEffect;
     [SerializeField, ReadOnly] private int _storedDamage, _totalFloorCount;
     private string _towerHealthSaveName = "TowerHealth", _storedDamageSaveName = "StoredDamage";
@@ -34,8 +34,8 @@ public class TowerController : MonoBehaviour
     public void TriggerEndingProtocol()
     {
         ToggleText(true);
-        
     }
+
     private void Save()
     {
         PlayerPrefs.SetInt(_towerHealthSaveName, _currentHealth);
@@ -46,6 +46,7 @@ public class TowerController : MonoBehaviour
     {
         _targetMesh = target;
     }
+
     private void Load()
     {
         int health = PlayerPrefs.GetInt(_towerHealthSaveName, _maxHealth);
@@ -85,7 +86,8 @@ public class TowerController : MonoBehaviour
     [Button]
     public void GetHit()
     {
-        if(_currentHealth>0)
+        AudioManager.Instance.PlayStoneHit();
+        if (_currentHealth > 0)
         {
             _currentHealth -= 2;
             _storedDamage += 2;
@@ -125,6 +127,7 @@ public class TowerController : MonoBehaviour
     {
         _towerMesh.gameObject.SetActive(state);
     }
+
     private void LowerTower(int times = 1)
     {
         IEnumerator MoveCoroutine()
@@ -156,6 +159,7 @@ public class TowerController : MonoBehaviour
     {
         _healthText.gameObject.SetActive(state);
     }
+
     private float GetMeshLength_y()
     {
         float yLength = meshList[0].GetComponent<MeshFilter>().sharedMesh.bounds.size.y;

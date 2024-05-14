@@ -57,6 +57,7 @@ public class DragonManager : MonoBehaviour
                 _dragonList[i].Attack();
             }
 
+            AudioManager.Instance.PlayFire();
             yield return new WaitForSeconds(1);
         }
     }
@@ -138,13 +139,14 @@ public class DragonManager : MonoBehaviour
 
     IEnumerator DelayCoroutine(EndingFightController endingFightController)
     {
+        int totalDragonNum = _dragonList.Count;
         for (int i = 0; i < _dragonList.Count; i++)
         {
             _dragonList[i].StartEndingProtocol(endingFightController);
             yield return new WaitForSeconds(0.3f);
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f * (totalDragonNum));
 
         endingFightController.ActivateFight();
     }

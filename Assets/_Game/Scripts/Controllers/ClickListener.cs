@@ -7,19 +7,19 @@ public class ClickListener : MonoBehaviour
 {
     [SerializeField] private BossController _bossController;
     private bool _tutorialClosed;
+
     private void Update()
     {
-        if (!_tutorialClosed)
+        if (!_bossController.CanFight()) return;
+        if (Input.GetMouseButtonDown(0))
         {
-            TutorialController.Instance.StopTapAnim();
-            _tutorialClosed = true;
-        } 
-        if (_bossController.CanFight())
-        {
-            if (Input.GetMouseButtonDown(0))
+            if (!_tutorialClosed)
             {
-                _bossController.Attack();
+                TutorialController.Instance.StopTapAnim();
+                _tutorialClosed = true;
             }
+
+            _bossController.Attack();
         }
     }
 }

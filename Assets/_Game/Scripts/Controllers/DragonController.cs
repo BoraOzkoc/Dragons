@@ -387,6 +387,7 @@ public class DragonController : MonoBehaviour, ICollectable
     {
         HapticPatterns.PlayPreset(HapticPatterns.PresetType.MediumImpact);
 
+        AudioManager.Instance.PlayMerge();
         SetNumber(_number * 2);
         ToggleBlock(false);
         CheckNeighbourNodes();
