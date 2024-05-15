@@ -10,6 +10,8 @@ public class DragonManager : MonoBehaviour
 {
     [SerializeField] private List<DragonController> _dragonList = new List<DragonController>();
     [SerializeField] private MovementController _movementController;
+
+    [SerializeField] private float _attackSpeed;
     private bool _attackState;
     private Coroutine _attackCoroutine, _centerCoroutine;
 
@@ -129,7 +131,7 @@ public class DragonManager : MonoBehaviour
         _movementController.StopMovement();
         StopAttack();
         TriggerDragons(endingFightController);
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(_attackSpeed);
     }
 
     private void TriggerDragons(EndingFightController endingFightController)
