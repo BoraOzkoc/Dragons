@@ -115,6 +115,7 @@ MonoBehaviour:
   _dragonList:
   - {fileID: 6001656172423958411}
   _movementController: {fileID: 925168424611119162}
+  _attackSpeed: 1
 --- !u!1001 &7986514796523521157
 PrefabInstance:
   m_ObjectHideFlags: 0
