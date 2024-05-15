@@ -226,8 +226,7 @@ public class DragonManager : MonoBehaviour
     {
         if (dragon_1.GetNumber() == dragon_2.GetNumber())
         {
-            StartCoroutine(MergeProtocol(dragon_1, dragon_2, 0.5f));
-            CenterDragons();
+            StartCoroutine(MergeProtocol(dragon_1, dragon_2, 0.3f));
             return true;
         }
         else
@@ -287,5 +286,7 @@ public class DragonManager : MonoBehaviour
             dragon_2.Reposition();
             dragon_2.GetMerged();
         }
+        CenterDragons();
+
     }
 }
