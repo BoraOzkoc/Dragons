@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Lofelt.NiceVibrations;
+using NaughtyAttributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,8 @@ public class ObstacleController : MonoBehaviour
     public enum Type
     {
         Cage,
-        Egg
+        Egg,
+        Crystal
     }
 
     private void Start()
@@ -42,18 +44,20 @@ public class ObstacleController : MonoBehaviour
 
     public void DecreaseNumber(int amount)
     {
+        if (ObstacleType == Type.Crystal) return;
         if (ObstacleType == Type.Cage) AudioManager.Instance.PlayMetalHit();
         else if (ObstacleType == Type.Egg) AudioManager.Instance.PlayEggHit();
-        transform.DOShakeScale(0.15f, 1, 5);
         if (isDestroyed) return;
         _obstacleNumber -= amount;
         if (_obstacleNumber <= 0)
         {
             _obstacleNumber = 0;
             isDestroyed = true;
-            DestroyAnim();
             FreeDragon();
+            DestroyAnim();
         }
+        else transform.DOShakeScale(0.15f, 1, 5);
+
 
         UpdateText();
     }
@@ -92,8 +96,19 @@ public class ObstacleController : MonoBehaviour
         _numberText.gameObject.SetActive(_obstacleNumber > 0);
     }
 
+    private void HideDragon()
+    {
+        if(_dragonController && ObstacleType == Type.Crystal) _dragonController.gameObject.SetActive(false);
+    }
+
+    private void HideText()
+    {
+        if(ObstacleType == Type.Crystal&&_numberText)_numberText.gameObject.SetActive(false);
+    }
     private void OnValidate()
     {
         UpdateText();
+        HideDragon();
+        HideText();
     }
 }

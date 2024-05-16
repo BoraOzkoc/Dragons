@@ -26153,7 +26153,7 @@ MonoBehaviour:
   _damage: 1
   _waitBetweenAttacks: 1
   _projectileSpeed: 10
-  _projectileLifeTime: 1
+  _projectileLifeTime: 1.5
   _firePoint: {fileID: 5650226514521975132}
   _animator: {fileID: 5957479170725665285}
   _bossController: {fileID: 0}
