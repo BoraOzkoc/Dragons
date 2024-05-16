@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FoamTex:
-        m_Texture: {fileID: 2800000, guid: 2e10c404ec8e1ff41bff06b82e5569df, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0ff9da63433ff044ba94d59ff31bbe11, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FoamTexDynamic:
@@ -163,21 +163,21 @@ Material:
     - _EnvironmentReflectionsOn: 0
     - _FlatShadingOn: 0
     - _FlowSpeed: 1
-    - _FoamBaseAmount: 1
-    - _FoamClipping: 0.999
-    - _FoamDistortion: 0.38
+    - _FoamBaseAmount: 0.061
+    - _FoamClipping: 0
+    - _FoamDistortion: 0
     - _FoamOn: 1
     - _FoamOpacity: 0.151
     - _FoamSize: 0.771
-    - _FoamSpeed: 0.5
+    - _FoamSpeed: 0.120000176
     - _FoamSpeedDynamic: 0.1
-    - _FoamSubSpeed: -0.25
+    - _FoamSubSpeed: -0.32999992
     - _FoamSubSpeedDynamic: -0.1
-    - _FoamSubTiling: 0.5
+    - _FoamSubTiling: 0.4999999
     - _FoamSubTilingDynamic: 2
     - _FoamTiling: 0.1
     - _FoamTilingDynamic: 0.2
-    - _FoamWaveAmount: 0.936
+    - _FoamWaveAmount: 0
     - _FoamWaveMask: 0
     - _FoamWaveMaskExp: 1
     - _GlossMapScale: 0
