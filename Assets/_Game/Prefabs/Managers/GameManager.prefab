@@ -200,7 +200,7 @@ MonoBehaviour:
   _fire: {fileID: 8300000, guid: 94c91a27993c8424bb5944e5c2c4806c, type: 3}
   _metalHit: {fileID: 8300000, guid: cd65941f22a57a74cbbe1a549b28d013, type: 3}
   _eggHit: {fileID: 8300000, guid: f92b0ce36d254a840bdea65dd2542dde, type: 3}
-  _stoneHit: {fileID: 8300000, guid: 94c91a27993c8424bb5944e5c2c4806c, type: 3}
+  _stoneHit: {fileID: 8300000, guid: c99066c92aedb2c41a7190e044dc98ce, type: 3}
   _merge: {fileID: 8300000, guid: 14204cfecc0c80c46aa149d48ce16445, type: 3}
 --- !u!82 &3278876100929674541
 AudioSource:
