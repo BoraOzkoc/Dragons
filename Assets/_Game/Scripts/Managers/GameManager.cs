@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
     private void SpawnLevel(int level)
     {
         ResetStatus();
-        if (level >= levelList.Count) level = Random.Range(0, levelList.Count);
+        if (level >= levelList.Count) level = Random.Range(3, levelList.Count);
 
         _activeLevel = Instantiate(levelList[level]);
     }

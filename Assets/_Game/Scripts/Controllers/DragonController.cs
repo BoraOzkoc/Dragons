@@ -44,7 +44,7 @@ public class DragonController : MonoBehaviour, ICollectable
 
     public void Randomize()
     {
-        int powerNumber =(Random.Range(1, 8));
+        int powerNumber =(Random.Range(1, 4));
         int randomNumber = (int)math.pow(2 ,powerNumber);
         SetLevel(powerNumber);
         SetNumber(randomNumber);
