@@ -3699,6 +3699,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ending
       objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.1507435
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -8.050981
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 7.39563
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.051938538
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.011147514
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.9979986
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.034306742
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -3.86
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -173.992
+      objectReference: {fileID: 0}
+    - target: {fileID: 5143650390687226654, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -1.483
+      objectReference: {fileID: 0}
     - target: {fileID: 5642934730419733435, guid: 99415812241d5f445a12c0cf6f44cc01, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
