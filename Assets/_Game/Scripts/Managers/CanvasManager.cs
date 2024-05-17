@@ -3,13 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using JetBrains.Annotations;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CanvasManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _winGroup, _failGroup;
-    [SerializeField] private CanvasGroup _canvasGroup;
+    public static CanvasManager Instance;
 
+    [SerializeField] private GameObject _winGroup, _failGroup;
+    [SerializeField] private CanvasGroup _levelStateCanvasGroup, _levelCanvasGroup;
+    [SerializeField] private TextMeshProUGUI _levelText;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) Destroy(gameObject);
+        else Instance = this;
+    }
     private void OnEnable()
     {
         GameManager.GameStartedEvent += GameStartedEvent;
@@ -36,10 +46,15 @@ public class CanvasManager : MonoBehaviour
     {
         _winGroup.SetActive(false);
         _failGroup.SetActive(false);
-        _canvasGroup.DOFade(0, 0);
+        _levelStateCanvasGroup.DOFade(0, 0);
 
     }
 
+    public void SetLevelText()
+    {
+        int level = GameManager.Instance.GetLevel();
+        _levelText.text = "Level " + level;
+    }
     private void GameCompletedEvent()
     {
         StartCoroutine(LevelCompletedEvent());
@@ -49,13 +64,13 @@ public class CanvasManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         ToggleGroups(true);
-        _canvasGroup.DOFade(1, 1).OnComplete(() => ToggleCanvas(true));
+        _levelStateCanvasGroup.DOFade(1, 1).OnComplete(() => ToggleCanvas(true));
     }
 
     private void ToggleCanvas(bool state)
     {
-        _canvasGroup.interactable = state;
-        _canvasGroup.blocksRaycasts = state;
+        _levelStateCanvasGroup.interactable = state;
+        _levelStateCanvasGroup.blocksRaycasts = state;
     }
 
     private void ToggleGroups(bool levelWon)
@@ -67,6 +82,6 @@ public class CanvasManager : MonoBehaviour
     private void GameFailedEvent()
     {
         ToggleGroups(false);
-        _canvasGroup.DOFade(1, 1).OnComplete(() => ToggleCanvas(true));
+        _levelStateCanvasGroup.DOFade(1, 1).OnComplete(() => ToggleCanvas(true));
     }
 }

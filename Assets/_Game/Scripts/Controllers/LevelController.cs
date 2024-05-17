@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,11 @@ public class LevelController : MonoBehaviour
         else Instance = this;
     }
 
+    private void Start()
+    {
+        CanvasManager.Instance.SetLevelText();
+    }
+
     public EndingController GetEndingController()
     {
         return _endingController;
@@ -29,7 +35,6 @@ public class LevelController : MonoBehaviour
 
     public void GetDestroyed()
     {
-        //Do something then destroy
         Destroy(gameObject);
     }
 }

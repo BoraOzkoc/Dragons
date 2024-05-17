@@ -131,6 +131,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+<<<<<<< Updated upstream
     - target: {fileID: 4842499402783550124, guid: 53db3622594a08e4fbc5210c457e0235, type: 3}
       propertyPath: levelList.Array.size
       value: 6
@@ -159,6 +160,12 @@ PrefabInstance:
       propertyPath: levelList.Array.data[5]
       value: 
       objectReference: {fileID: 5057805217329822197, guid: 35fdc90a7e1571943bada534b738389f, type: 3}
+=======
+    - target: {fileID: 3946394643402440279, guid: 53db3622594a08e4fbc5210c457e0235, type: 3}
+      propertyPath: m_fontSize
+      value: 191.57
+      objectReference: {fileID: 0}
+>>>>>>> Stashed changes
     - target: {fileID: 4842499402783550125, guid: 53db3622594a08e4fbc5210c457e0235, type: 3}
       propertyPath: m_Name
       value: GameManager

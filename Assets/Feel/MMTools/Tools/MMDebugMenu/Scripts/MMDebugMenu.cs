@@ -63,7 +63,7 @@ namespace MoreMountains.Tools
 		/// </summary>
 		protected virtual void Start()
 		{
-			Initialization();
+			//Initialization();
 		}
 
 		/// <summary>
@@ -414,8 +414,8 @@ namespace MoreMountains.Tools
 		/// </summary>
 		public virtual void OpenMenu()
 		{
-			OnOpenEvent?.Invoke();
-			StartCoroutine(ToggleCo(false));
+			//OnOpenEvent?.Invoke();
+			//StartCoroutine(ToggleCo(false));
 		}
 
 		/// <summary>
@@ -423,7 +423,7 @@ namespace MoreMountains.Tools
 		/// </summary>
 		public virtual void CloseMenu()
 		{
-			StartCoroutine(ToggleCo(true));
+			//StartCoroutine(ToggleCo(true));
 		}
 
 		/// <summary>
@@ -431,7 +431,7 @@ namespace MoreMountains.Tools
 		/// </summary>
 		public virtual void ToggleMenu()
 		{
-			StartCoroutine(ToggleCo(Active));
+			//StartCoroutine(ToggleCo(Active));
 		}
 
 		/// <summary>

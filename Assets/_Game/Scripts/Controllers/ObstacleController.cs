@@ -16,7 +16,7 @@ public class ObstacleController : MonoBehaviour
     [SerializeField] private GameObject _mesh;
     [SerializeField] private int _obstacleNumber;
     [SerializeField] private bool isDestroyed;
-
+    [SerializeField] private Tween _scaleTween;
     public enum Type
     {
         Cage,
@@ -56,7 +56,15 @@ public class ObstacleController : MonoBehaviour
             FreeDragon();
             DestroyAnim();
         }
-        else transform.DOShakeScale(0.15f, 1, 5);
+        else
+        {
+            if(_scaleTween != null) _scaleTween.Kill();
+            transform.localScale = Vector3.one;
+            _scaleTween = transform.DOShakeScale(0.15f, 1, 5).OnComplete(() =>
+            {
+                transform.localScale = Vector3.one;
+            });
+        }
 
 
         UpdateText();
@@ -70,6 +78,7 @@ public class ObstacleController : MonoBehaviour
     private void DestroyCage()
     {
         _mesh.SetActive(false);
+        transform.DOKill();
     }
 
     private void RandomizeDragon()
@@ -85,8 +94,8 @@ public class ObstacleController : MonoBehaviour
     private void FreeDragon()
     {
         if (ObstacleType == Type.Egg) RandomizeDragon();
+        _dragonController.transform.DOScale(Vector3.one, 0f);
         _dragonController.GetFreed();
-        _dragonController.transform.DOScale(Vector3.one, 0.3f);
         _dragonController = null;
     }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -26,6 +27,10 @@ public class GameManager : MonoBehaviour
         SetFps();
     }
 
+    private void DisableDebugger()
+    {
+        DebugManager.instance.enableRuntimeUI = false;
+    }
     private void SetFps()
     {
         Application.targetFrameRate = Screen.currentResolution.refreshRate;
@@ -85,6 +90,12 @@ public class GameManager : MonoBehaviour
         SpawnLevel(level);
     }
 
+    public int GetLevel()
+    {
+        int level = PlayerPrefs.GetInt(_level, 0);
+
+        return level;
+    }
     private void SpawnLevel(int level)
     {
         ResetStatus();

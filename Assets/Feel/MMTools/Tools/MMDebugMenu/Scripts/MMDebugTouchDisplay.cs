@@ -56,7 +56,7 @@ namespace MoreMountains.Tools
 		protected virtual void Update()
 		{
 			DisableAllDisplays();
-			DetectTouches();
+		//	DetectTouches();
 		}
 
 		/// <summary>
