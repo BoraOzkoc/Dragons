@@ -129,6 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6958725647011586769}
+  - component: {fileID: 3274907772555294870}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -156,6 +157,26 @@ Transform:
   - {fileID: 3767449975206822149}
   m_Father: {fileID: 4842499402783550127}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3274907772555294870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5350795236880440477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 168f80e4ec8a4314c8ca506740626021, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FolderName: Screenshots
+  Method: 0
+  ScreenshotShortcut: 107
+  GameViewSizeMultiplier: 3
+  TargetCamera: {fileID: 0}
+  ResolutionWidth: 0
+  ResolutionHeight: 0
+  TakeScreenshotButton: 0
 --- !u!1 &8707253876378047722
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,6 +53,7 @@ public class CanvasManager : MonoBehaviour
     public void SetLevelText()
     {
         int level = GameManager.Instance.GetLevel();
+        level += 1;
         _levelText.text = "Level " + level;
     }
     private void GameCompletedEvent()

@@ -1,9 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.IO;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
 using UnityEngine.InputSystem;
 #endif
-
+public struct Resolution
+{
+	public int Width;
+	public int Height;
+}
 namespace MoreMountains.Tools
 {
 	/// <summary>
@@ -12,6 +17,8 @@ namespace MoreMountains.Tools
 	[AddComponentMenu("More Mountains/Tools/Utilities/MMScreenshot")]
 	public class MMScreenshot : MonoBehaviour
 	{
+		public List<Resolution> Resolutions;
+
 		/// the name of the folder (relative to the project's root) to save screenshots to
 		public string FolderName = "Screenshots";
 		/// the method to use to take the screenshot. Screencapture uses the API of the same name, and will let you keep 
@@ -93,7 +100,7 @@ namespace MoreMountains.Tools
 					break;
 
 				case Methods.RenderTexture:
-					savePath = TakeRenderTextureScreenshot();
+					 TakeRenderTextureScreenshot();
 					break;
 			}
 			Debug.Log("[MMScreenshot] Screenshot taken and saved at " + savePath);
@@ -105,6 +112,7 @@ namespace MoreMountains.Tools
 		/// <returns></returns>
 		protected virtual string TakeScreenCaptureScreenshot()
 		{
+			
 			float width = Screen.width * GameViewSizeMultiplier;
 			float height = Screen.height * GameViewSizeMultiplier;
 			string savePath = FolderName+"/screenshot_" + width + "x" + height + "_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
@@ -117,23 +125,29 @@ namespace MoreMountains.Tools
 		/// Takes a screenshot using a render texture and saves it to file
 		/// </summary>
 		/// <returns></returns>
-		protected virtual string TakeRenderTextureScreenshot()
+		protected virtual void TakeRenderTextureScreenshot()
 		{
-			string savePath = FolderName + "/screenshot_" + ResolutionWidth + "x" + ResolutionHeight + "_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
+			for (int i = 0; i < Resolutions.Count; i++)
+			{
+				ResolutionWidth = Resolutions[i].Width;
+				ResolutionHeight = Resolutions[i].Height;
 
-			RenderTexture renderTexture = new RenderTexture(ResolutionWidth, ResolutionHeight, 24);
-			TargetCamera.targetTexture = renderTexture;
-			Texture2D screenShot = new Texture2D(ResolutionWidth, ResolutionHeight, TextureFormat.RGB24, false);
-			TargetCamera.Render();
-			RenderTexture.active = renderTexture;
-			screenShot.ReadPixels(new Rect(0, 0, ResolutionWidth, ResolutionHeight), 0, 0);
-			TargetCamera.targetTexture = null;
-			RenderTexture.active = null; 
-			Destroy(renderTexture);
-			byte[] bytes = screenShot.EncodeToPNG();
-			System.IO.File.WriteAllBytes(savePath, bytes);
+				string savePath = FolderName + "/screenshot_" + ResolutionWidth + "x" + ResolutionHeight + "_" + System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
 
-			return savePath;
+				RenderTexture renderTexture = new RenderTexture(ResolutionWidth, ResolutionHeight, 24);
+				TargetCamera.targetTexture = renderTexture;
+				Texture2D screenShot = new Texture2D(ResolutionWidth, ResolutionHeight, TextureFormat.RGB24, false);
+				TargetCamera.Render();
+				RenderTexture.active = renderTexture;
+				screenShot.ReadPixels(new Rect(0, 0, ResolutionWidth, ResolutionHeight), 0, 0);
+				TargetCamera.targetTexture = null;
+				RenderTexture.active = null; 
+				Destroy(renderTexture);
+				byte[] bytes = screenShot.EncodeToPNG();
+				System.IO.File.WriteAllBytes(savePath, bytes);
+				
+				
+			}
 		}
 	}
 }

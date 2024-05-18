@@ -79,10 +79,6 @@ public class GroundController : MonoBehaviour
     private void DeleteExistingGround()
     {
         if (_floorList.Count <= 0) return;
-        // for (int i = 0; i < _floorList.Count; i++)
-        // {
-        //     DestroyImmediate(_floorList[i]);
-        // }
 
         if (_floorParent)
         {
