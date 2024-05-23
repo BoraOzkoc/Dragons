@@ -162,7 +162,7 @@ PrefabInstance:
     - target: {fileID: 4842499402783550124, guid: 53db3622594a08e4fbc5210c457e0235, type: 3}
       propertyPath: levelList.Array.data[6]
       value: 
-      objectReference: {fileID: 5057805217329822197, guid: 35fdc90a7e1571943bada534b738389f, type: 3}
+      objectReference: {fileID: 5057805217329822197, guid: 139f5bbc083fd544ba472fdcab99a080, type: 3}
     - target: {fileID: 4842499402783550125, guid: 53db3622594a08e4fbc5210c457e0235, type: 3}
       propertyPath: m_Name
       value: GameManager

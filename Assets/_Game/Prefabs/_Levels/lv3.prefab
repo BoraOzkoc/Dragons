@@ -475,6 +475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9017030462100039074}
   - component: {fileID: 5057805217329822197}
+  - component: {fileID: 8200237779767682901}
   m_Layer: 0
   m_Name: lv3
   m_TagString: Untagged
@@ -524,6 +525,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _groundController: {fileID: 3462198297863784821}
   _endingController: {fileID: 2010118365668713118}
+--- !u!114 &8200237779767682901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031573254810770866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6717ea0f3ed1f4c538b31b3c3f5372d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 8648682250397373939}
+  IsTransparent: 0
+  OpenFileDirectory: 1
+  ShotKey: 32
+  Resolutions:
+  - Width: 3000
+    Height: 2000
 --- !u!1 &2068321682819796431
 GameObject:
   m_ObjectHideFlags: 0
